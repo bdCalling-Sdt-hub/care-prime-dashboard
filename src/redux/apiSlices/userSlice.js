@@ -23,6 +23,9 @@ const userSlice = api.injectEndpoints({
       query: (credentials) => ({
         url: "/auth/login",
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: credentials,
       }),
     }),

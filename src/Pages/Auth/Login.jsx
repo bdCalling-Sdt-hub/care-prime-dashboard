@@ -1,30 +1,33 @@
+
 import { Button, Checkbox, Form, Input, message } from "antd";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormItem from "../../components/common/FormItem";
 import { useLoginMutation } from "../../redux/apiSlices/userSlice";
 
-
 const Login = () => {
   const navigate = useNavigate();
-  // const [loading, setLoading] = useState(false);
-  const [login, { isLoading:loading }] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation(); 
 
- const onFinish = async (values) => {
-   try {
-     const { data, error } = await login(values); // Redux API Call
+  const onFinish = async (values) => {
+    try {
+      const response = await login(values);
+      console.log("API Response:", response); 
+      console.log("API Response:", response?.data?.data.accessToken); 
 
-     if (data) {
-       localStorage.setItem("token", data.token);
-       message.success("Login successful!");
-       navigate("/");
-     } else {
-       message.error(error?.data?.message || "Invalid credentials!");
-     }
-   } catch (err) {
-     message.error("Something went wrong. Please try again.");
-   }
- };
+      if (response.data && response?.data?.data.accessToken) {
+        localStorage.setItem("token", response?.data?.data.accessToken);
+        message.success("Login successful!");
+        navigate("/");
+      } else {
+        console.error("Token Missing in Response:", response?.error?.data);
+        message.error(response?.error?.data?.message || "Invalid credentials!");
+      }
+    } catch (err) {
+      console.error("Login Error:", err);
+      message.error("Something went wrong. Please try again.");
+    }
+  };
 
   return (
     <div>
@@ -81,9 +84,9 @@ const Login = () => {
               marginTop: 20,
             }}
             className="flex items-center justify-center bg-primary rounded-lg"
-            disabled={loading}
+            disabled={isLoading} 
           >
-            {loading ? "Signing in..." : "Sign in"}
+            {isLoading ? "Signing in..." : "Sign in"}
           </button>
         </Form.Item>
       </Form>
