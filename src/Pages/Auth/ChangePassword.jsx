@@ -1,55 +1,63 @@
 import { Button, Form, Input } from "antd";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { useChangePasswordMutation } from "../../redux/apiSlices/authSlice";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
+import { useChangePasswordMutation } from "../../redux/apiSlices/authSlice";
 
 const ChangePassword = () => {
   const [changePassword, { isLoading }] = useChangePasswordMutation();
-  const [newPassError, setNewPassError] = useState("");
-  const [conPassError, setConPassError] = useState("");
   const [form] = Form.useForm();
 
-  form.setFieldsValue({});
 
-  const validatePasswordChange = (values) => {
-    let errors = {};
+const validatePasswordChange = (values) => {
+  let errors = {};
 
-    if (values?.currentPass === values.newPass) {
-      errors.newPassError = "The New password is similar to the old Password";
-      setNewPassError(errors.newPassError);
-    } else {
-      setNewPassError("");
-    }
+  if (values?.currentPass === values.newPass) {
+    errors.newPassError = "The New password is similar to the old Password";
+  }
 
-    if (values?.newPass !== values.confirmPass) {
-      errors.conPassError = "New Password and Confirm Password Don't Match";
-      setConPassError(errors.conPassError);
-    } else {
-      setConPassError("");
-    }
+  if (values?.newPass !== values.confirmPass) {
+    errors.conPassError = "New Password and Confirm Password Don't Match";
+  }
 
-    return errors;
-  };
+  return errors; 
+};
+
+
 
   const onFinish = async (values) => {
-    const errors = validatePasswordChange(values);
+const data = {
+  currentPassword: values.currentPass,
+  newPassword: values.newPass,
+  confirmPassword: values.confirmPass,
+};
+    
+    try {
+      const res = await changePassword(data).unwrap(); 
+console.log(res)
+     
+      if (res?.status) {
+        toast.success(res.message); 
+        form.resetFields(); 
+      }
+    } catch (error) {
+      
+      toast.error(error?.data?.message || "Something is wrong!");
 
-    if (Object.keys(errors).length === 0) {
-      try {
-        await changePassword({ ...values })
-          .unwrap()
-          .then(({ status, message, token }) => {
-            if (status) {
-              toast.success(message);
-              form.resetFields();
-            }
-          });
-      } catch (error) {
-        toast.error(error);
+      const errors = validatePasswordChange(values);
+      if (Object.keys(errors).length > 0) {
+        form.setFields([
+          { name: "newPass", errors: [errors.newPassError] },
+          { name: "confirmPass", errors: [errors.conPassError] },
+        ]);
+        toast.error(Object.values(errors).join("\n")); 
       }
     }
   };
+
+
+
+
 
   return (
     <div>
@@ -66,89 +74,45 @@ const ChangePassword = () => {
         className="w-[50%] mx-auto mt-20"
       >
         <Form.Item
-          name="currentPass"
+          name="currentPassword"
           label={<p>Current Password</p>}
           rules={[
-            {
-              required: true,
-              message: "Please Enter Current Password!",
-            },
+            { required: true, message: "Please enter your current password!" },
           ]}
         >
           <Input.Password
-            style={{ background: "transparent" }}
             placeholder="Enter current password"
-            className="h-12 bg-transparent hover:bg-transparent focus:bg-transparent placeholder:text-gray-500"
+            className="h-12"
           />
         </Form.Item>
 
         <Form.Item
-          name="newPass"
-          rules={[
-            {
-              required: true,
-              message: "Please Enter New Password!",
-            },
-          ]}
+          name="newPassword"
           label={<p>New Password</p>}
-          style={{ marginBottom: newPassError ? 0 : null }}
+          rules={[{ required: true, message: "Please enter a new password!" }]}
         >
-          <Input.Password
-            style={{ background: "transparent" }}
-            placeholder="Enter current password"
-            className="h-12 bg-transparent hover:bg-transparent focus:bg-transparent placeholder:text-gray-500"
-          />
+          <Input.Password placeholder="Enter new password" className="h-12" />
         </Form.Item>
-        {newPassError && (
-          <label style={{ display: "block", color: "red" }} htmlFor="error">
-            {newPassError}
-          </label>
-        )}
+        {newPassError && <p className="text-red-500">{newPassError}</p>}
 
         <Form.Item
+          name="confirmPassword"
           label={<p>Confirm Password</p>}
-          name="confirmPass"
           rules={[
-            {
-              required: true,
-              message: "Please Enter Confirm Password!",
-            },
+            { required: true, message: "Please confirm your new password!" },
           ]}
-          style={{ marginBottom: conPassError ? 0 : null }}
         >
-          <Input.Password
-            style={{ background: "transparent" }}
-            placeholder="Enter current password"
-            className="h-12 bg-transparent hover:bg-transparent focus:bg-transparent placeholder:text-gray-500"
-          />
+          <Input.Password placeholder="Confirm new password" className="h-12" />
         </Form.Item>
-        {conPassError && (
-          <label style={{ display: "block", color: "red" }} htmlFor="error">
-            {conPassError}
-          </label>
-        )}
+        {conPassError && <p className="text-red-500">{conPassError}</p>}
 
-        <Form.Item
-          style={{
-            marginBottom: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        <Form.Item className="text-center">
           <Button
             htmlType="submit"
-            block
-            style={{
-              width: "100%",
-              height: 48,
-              fontWeight: "400px",
-              background: "#023f86",
-              color: "#FCFCFC",
-            }}
-            className="roboto-medium  text-sm leading-4"
+            loading={isLoading}
+            className="w-full h-12 bg-blue-600 text-white"
           >
-            {isLoading ? "Changing" : "Update"}
+            {isLoading ? "Changing..." : "Update Password"}
           </Button>
         </Form.Item>
       </Form>

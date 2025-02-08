@@ -36,17 +36,26 @@ const authSlice = api.injectEndpoints({
         };
       },
     }),
+    resendOtp: builder.mutation({
+      query: (data) => {
+        return {
+          method: "POST",
+          url: "/auth/resend-otp",
+          body: data,
+        };
+      },
+    }),
     resetPassword: builder.mutation({
-      query: ( data ) => {
+      query: (data) => {
         const token = localStorage.getItem("reset_token");
         return {
-          url: '/auth/reset-password',
-          method: 'POST',
+          url: "/auth/reset-password",
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: `${token}` || undefined,
-        },
-        body: data,
+          },
+          body: data,
         };
       },
     }),
@@ -56,13 +65,8 @@ const authSlice = api.injectEndpoints({
           method: "POST",
           url: "/auth/change-password",
           body: data,
-          headers: {
-            Authorization: `Bearer ${JSON.parse(
-              localStorage.getItem("token")
-            )}`,
-          },
         };
-      },
+      }
     }),
 
     updateProfile: builder.mutation({
@@ -103,6 +107,7 @@ export const {
   useOtpVerifyMutation,
   useLoginMutation,
   useForgotPasswordMutation,
+  useResendOtpMutation,
   useResetPasswordMutation,
   useChangePasswordMutation,
   useUpdateProfileMutation,

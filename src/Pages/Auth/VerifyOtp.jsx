@@ -2,7 +2,10 @@ import { Button, Form, Typography, message } from "antd";
 import React, { useState } from "react";
 import OTPInput from "react-otp-input";
 import { useNavigate } from "react-router-dom";
-import { useOtpVerifyMutation } from "../../redux/apiSlices/authSlice";
+import {
+  useOtpVerifyMutation,
+  useResendOtpMutation,
+} from "../../redux/apiSlices/authSlice";
 const { Text } = Typography;
 
 const VerifyOtp = () => {
@@ -10,6 +13,7 @@ const VerifyOtp = () => {
   const [otp, setOtp] = useState("");
   const email = new URLSearchParams(location.search).get("email");
   const [otpVerify, { isLoading }] = useOtpVerifyMutation();
+  const [resendOtp, { isLoading: isResending }] = useResendOtpMutation();
   // console.log(otp);
 
   const onFinish = async (values) => {
@@ -48,11 +52,25 @@ const VerifyOtp = () => {
     }
   };
 
+  // Resend OTP function
+ const handleResendEmail = async () => {
+   if (!email) {
+     return message.error("Invalid email. Please try again.");
+   }
 
-  const handleResendEmail = async () => {
-    // Here you can call an API to resend OTP
-    message.info("Resend OTP functionality is not implemented yet.");
-  };
+   try {
+     const res = await resendOtp({ email }).unwrap(); // ✅ Corrected object format
+     console.log(res);
+     if (res?.success) {
+       message.success("OTP has been resent to your email!");
+     } else {
+       message.error(res?.message || "Failed to resend OTP. Try again!");
+     }
+   } catch (error) {
+     message.error(error?.data?.message || "Something went wrong!");
+   }
+ };
+
 
   return (
     <div>
