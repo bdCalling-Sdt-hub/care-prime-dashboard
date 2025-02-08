@@ -18,18 +18,7 @@ const userSlice = api.injectEndpoints({
         };
       },
     }),
-
-    login: builder.mutation({
-      query: (credentials) => ({
-        url: "/auth/login",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: credentials,
-      }),
-    }),
   }),
 });
 
-export const { useUsersQuery, useLoginMutation } = userSlice;
+export const { useUsersQuery } = userSlice;

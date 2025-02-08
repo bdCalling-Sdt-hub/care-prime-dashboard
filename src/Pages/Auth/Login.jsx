@@ -3,7 +3,8 @@ import { Button, Checkbox, Form, Input, message } from "antd";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormItem from "../../components/common/FormItem";
-import { useLoginMutation } from "../../redux/apiSlices/userSlice";
+import { useLoginMutation } from "../../redux/apiSlices/authSlice";
+// import { useLoginMutation } from "../../redux/apiSlices/userSlice";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -11,9 +12,7 @@ const Login = () => {
 
   const onFinish = async (values) => {
     try {
-      const response = await login(values);
-      console.log("API Response:", response); 
-      console.log("API Response:", response?.data?.data.accessToken); 
+      const response = await login(values); 
 
       if (response.data && response?.data?.data.accessToken) {
         localStorage.setItem("token", response?.data?.data.accessToken);
