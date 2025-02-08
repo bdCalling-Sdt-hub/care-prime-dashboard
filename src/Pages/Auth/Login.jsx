@@ -4,11 +4,10 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FormItem from "../../components/common/FormItem";
 import { useLoginMutation } from "../../redux/apiSlices/authSlice";
-// import { useLoginMutation } from "../../redux/apiSlices/userSlice";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [login, { isLoading }] = useLoginMutation(); 
+  const [login, { isLoading, }] = useLoginMutation(); 
 
   const onFinish = async (values) => {
     try {
