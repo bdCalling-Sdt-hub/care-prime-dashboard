@@ -32,19 +32,20 @@ const ChangePassword = () => {
   };
 
   const onFinish = async (values) => {
-    // const errors = validatePasswordChange(values);
+    const errors = validatePasswordChange(values);
 
     const res = await changePassword(values);
-    console.log(res);
+    console.log(res?.data?.success);
 
 
 
-    /* // If no errors, proceed with the API call
+     // If no errors, proceed with the API call
     if (Object.keys(errors).length === 0) {
       try {
         
-        if (res.success) {
+        if (res?.data?.success) {
           toast.success("Password changed successfully");
+          form.resetFields();
         } else {
           toast.error("Password change failed");
         }
@@ -52,7 +53,7 @@ const ChangePassword = () => {
         console.error("Error changing password:", err);
         toast.error("An error occurred while changing the password");
       }
-    } */
+    }
   };
 
   return (
