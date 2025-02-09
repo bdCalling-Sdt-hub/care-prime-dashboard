@@ -66,39 +66,35 @@ const authSlice = api.injectEndpoints({
           url: "/auth/change-password",
           body: data,
         };
-      }
+      },
     }),
 
     updateProfile: builder.mutation({
       query: (data) => {
         return {
-          method: "POST",
-          url: "/auth/update-profile",
+          method: "PATCH",
+          url: "/user",
           body: data,
-          headers: {
-            Authorization: `Bearer ${JSON.parse(
-              localStorage.getItem("token")
-            )}`,
-          },
+        };
+      },
+    }),
+    getUser: builder.query({
+      query: (data) => {
+        return {
+          method: "GET",
+          url: "/user/profile",
+          body: data,
         };
       },
     }),
 
     profile: builder.query({
-      query: () => {
-        return {
-          method: "GET",
-          url: "/auth/get-profile",
-          headers: {
-            Authorization: `Bearer ${JSON.parse(
-              localStorage.getItem("token")
-            )}`,
-          },
-        };
-      },
-      transformResponse: ({ user }) => {
-        return user;
-      },
+      query: () => ({
+        method: "GET",
+        url: "/user/profile",
+      }),
+      transformResponse: ({ user }) => user,
+      providesTags: ["User"], 
     }),
   }),
 });
@@ -112,4 +108,5 @@ export const {
   useChangePasswordMutation,
   useUpdateProfileMutation,
   useProfileQuery,
+  useGetUserQuery,
 } = authSlice;

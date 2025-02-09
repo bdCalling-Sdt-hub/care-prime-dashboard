@@ -19,7 +19,7 @@ export const UserProvider = ({children})=>{
         if(profile){
             setUser(profile);
         }
-    }, []);//[profile]
+    }, []);
 
 
     return(

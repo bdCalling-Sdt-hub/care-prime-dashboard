@@ -2,8 +2,11 @@ import { IoMdCloseCircleOutline, IoMdCloseCircle } from "react-icons/io";
 // import ContentsForm from "./ContentsForm";
 import { Button } from "antd";
 import FaqForm from "./FaqForm";
+import { useAddNewFaqMutation } from "../../../redux/apiSlices/faqSlice";
 
 const FaqModal = ({ isOpen, onClose }) => {
+  const [addNewFaq]=useAddNewFaqMutation()
+  
   if (!isOpen) return null;
 
   const handleBackdropClick = (e) => {

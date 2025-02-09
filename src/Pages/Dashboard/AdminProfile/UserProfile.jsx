@@ -1,39 +1,76 @@
 import React, { useEffect, useState } from "react";
-
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import { Button, Form, Input } from "antd";
-
-import { useUser } from "../../../provider/User";
+import toast from "react-hot-toast";
+import {
+  useGetUserQuery,
+  useUpdateProfileMutation,
+} from "../../../redux/apiSlices/authSlice";
+import { imageUrl } from "../../../redux/api/baseApi";
 
 const UserProfile = () => {
   const [form] = Form.useForm();
-  const { user } = useUser();
-  const [image, setImage] = useState(
-    "https://avatars.design/wp-content/uploads/2021/02/corporate-avatars-TN-1.jpg"
-  );
-  const [imgURL, setImgURL] = useState(image);
+  const { data: user, isLoading } = useGetUserQuery();
+  const [updateProfile] =useUpdateProfileMutation();
+console.log(user)
+  // Image state
+  const [image, setImage] = useState(null);
+  const [imgURL, setImgURL] = useState();
 
+  
   useEffect(() => {
     if (user) {
-      form.setFieldsValue(user);
-    }
-  }, [user, form]);
+      form.setFieldsValue({
+        name: user?.data?.name,
+        email: user?.data?.email,
+        contact: user?.data?.contact,
+        role: user?.data?.role, 
 
-  const handleSubmit = (values) => {
-    console.log(values);
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "Updated Successfully",
-      showConfirmButton: false,
-      timer: 1500,
-    });
+      }); 
+
+      setImgURL(
+        user?.data?.profile?.startsWith("https")
+          ? user?.data?.profile
+          : `${imageUrl}${user?.data?.profile}`
+      ); 
+    }
+  }, [user,setImgURL , form]);
+
+  const handleSubmit = async (values) => {
+    try { 
+ const formData = new FormData() 
+
+if(image){
+  formData.append("image" , image);
+} 
+ 
+formData.append("name", values?.name);
+formData.append("email", values?.email);
+formData.append("location", values?.location);
+formData.append("contact", values?.contact);
+  
+
+      const response = await updateProfile(formData).unwrap();
+
+      if (response.success) {
+        toast.success("Profile updated successfully");
+      } else {
+        toast.error("Profile update failed");
+      }
+    } catch (error) {
+      console.error("Update Error:", error);
+      toast.error("An error occurred while updating");
+    }
   };
+
   const onChange = (e) => {
-    const file = e.target.files[0];
-    const imgUrl = URL.createObjectURL(file);
-    setImgURL(imgUrl);
-    setImage(file);
+    const file = e.target.files[0]; 
+    console.log(file)
+    if (file) {
+      const imgUrl = URL.createObjectURL(file);
+      setImgURL(imgUrl);
+      setImage(file);
+    }
   };
 
   return (
@@ -103,7 +140,7 @@ const UserProfile = () => {
             <div>
               <Form.Item
                 style={{ marginBottom: 0 }}
-                name="firstName"
+                name="name"
                 label={<p style={{ display: "block" }}>Full Name</p>}
               >
                 <Input
@@ -133,12 +170,14 @@ const UserProfile = () => {
                 <Input
                   type="text"
                   placeholder="Enter Email"
+                  disabled
                   style={{
                     border: "1px solid #E0E4EC",
                     height: "52px",
                     background: "white",
                     borderRadius: "8px",
                     outline: "none",
+                    cursor: "not-allowed",
                   }}
                 />
               </Form.Item>
@@ -147,10 +186,10 @@ const UserProfile = () => {
             <div>
               <Form.Item
                 style={{ marginBottom: 0 }}
-                name="mobileNumber"
+                name="contact"
                 label={
                   <p style={{}} htmlFor="email">
-                    Phone Number
+                    contact
                   </p>
                 }
               >
@@ -170,15 +209,16 @@ const UserProfile = () => {
 
             <div>
               <Form.Item
-                name="location"
+                name="role"
                 style={{ marginBottom: 0 }}
                 label={
                   <p style={{ display: "block" }} htmlFor="">
-                    Location
+                    Role
                   </p>
                 }
               >
                 <Input
+                disabled
                   style={{
                     border: "1px solid #E0E4EC",
                     height: "52px",

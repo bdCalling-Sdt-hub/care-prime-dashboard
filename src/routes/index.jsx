@@ -12,7 +12,7 @@ import Events from "../Pages/Dashboard/Events";
 import Banner from "../Pages/Dashboard/Banner";
 import AboutUs from "../Pages/Dashboard/AboutUs";
 import PrivacyPolicy from "../Pages/Dashboard/PrivacyPolicy/PrivacyPolicy.jsx";
-import ChangePassword from "../Pages/Auth/ChangePassword";
+// import ChangePassword from "../Pages/Auth/ChangePassword";
 import Login from "../Pages/Auth/Login";
 import Subscription from "../Pages/Dashboard/Subscription";
 import Profile from "../Pages/Dashboard/Profile";
@@ -28,6 +28,7 @@ import Blogs from "../Pages/Dashboard/Blogs/Blogs";
 import MedicalHistory from "../Pages/Dashboard/MedicalHistory/MedicalHistory";
 import Faq from "../Pages/Dashboard/FAQ/Faq";
 import TermsAndCondition from "../Pages/Dashboard/TermsAndCondition/TermsAndCondition";
+import ChangePassword from "../Pages/Dashboard/AdminProfile/ChangePassword.jsx";
 
 const router = createBrowserRouter([
   {
@@ -95,10 +96,10 @@ const router = createBrowserRouter([
         path: "/terms-and-conditions",
         element: <TermsAndCondition />,
       },
-      // {
-      //   path: "/change-password",
-      //   element: <ChangePassword />,
-      // },
+      {
+        path: "/change-password",
+        element: <ChangePassword />,
+      },
       {
         path: "/sub-category",
         element: <SubCategory />,

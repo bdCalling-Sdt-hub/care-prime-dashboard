@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 
 const ChangePassword = () => {
   const [changePassword] = useChangePasswordMutation();
-  const isLoading = false; // You can replace this with a loading state if needed
   const [form] = Form.useForm();
 
   // Define error messages state
@@ -111,7 +110,7 @@ const ChangePassword = () => {
           <Button
             htmlType="submit"
             // loading={isLoading}
-            className="w-full h-12 bg-blue-600 text-white"
+            className="w-full h-12 bg-[#023F86] text-white"
           >
             Update password
           </Button>
