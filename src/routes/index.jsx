@@ -23,12 +23,13 @@ import NotFound from "../NotFound";
 import Notifications from "../Pages/Dashboard/Notifications";
 import SubCategory from "../Pages/Dashboard/SubCategory";
 import AdminProfile from "../Pages/Dashboard/AdminProfile/AdminProfile";
-import Insight from "../Pages/Dashboard/Insight";
+// import Insight from "../Pages/Dashboard/Insight";
 import Blogs from "../Pages/Dashboard/Blogs/Blogs";
 import MedicalHistory from "../Pages/Dashboard/MedicalHistory/MedicalHistory";
 import Faq from "../Pages/Dashboard/FAQ/Faq";
 import TermsAndCondition from "../Pages/Dashboard/TermsAndCondition/TermsAndCondition";
 import ChangePassword from "../Pages/Dashboard/AdminProfile/ChangePassword.jsx";
+import Insight from "../Pages/Dashboard/InsightfullTips.jsx";
 
 const router = createBrowserRouter([
   {

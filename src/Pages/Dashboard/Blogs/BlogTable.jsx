@@ -14,20 +14,21 @@ import {
   useGetAllBlogsQuery,
 } from "../../../redux/apiSlices/blogsSlice";
 import moment from "moment";
+import { imageUrl } from "../../../redux/api/baseApi";
 
 const BlogTable = () => {
   const { data: blogs, isLoading } = useGetAllBlogsQuery();
   const [addNewBlog] = useAddNewBlogMutation();
   const [editBlog] = useEditBlogMutation();
   const [deleteBlog] = useDeleteBlogMutation();
-console.log(blogs)
+  console.log(blogs);
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBlog, setEditingBlog] = useState(null);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 
-  const imageUrl = import.meta.env.VITE_IMAGE_URL;
+ 
 
   const openModal = (blog = null) => {
     setEditingBlog(blog);
@@ -39,9 +40,11 @@ console.log(blogs)
         summary: blog?.summary,
         source: blog?.source,
       });
-      setImagePreview( blog?.image?.startsWith("https")
-                ? blog?.image
-                : `${imageUrl}${blog?.image}`);
+      setImagePreview(
+        blog?.image?.startsWith("https")
+          ? blog?.image
+          : `${imageUrl}${blog?.image}`
+      );
     } else {
       form.resetFields();
       setImagePreview(null);
@@ -109,8 +112,6 @@ console.log(blogs)
     }
   };
 
-
-
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -118,7 +119,7 @@ console.log(blogs)
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
+      cancelButtonColor: "#023F86",
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
@@ -145,7 +146,7 @@ console.log(blogs)
       key: "image",
       render: (text) => (
         <img
-          className="w-28 h-12 rounded-3xl"
+          className="w-28 h-16 rounded-xl object-cover"
           src={text?.startsWith("http") ? text : `${imageUrl}/${text}`}
           alt=""
         />
@@ -160,7 +161,7 @@ console.log(blogs)
     {
       title: "Source",
       dataIndex: "source",
-      width:140,
+      width: 140,
       key: "source",
     },
     {
@@ -168,7 +169,7 @@ console.log(blogs)
       dataIndex: "summary",
       key: "summary",
       width: 600,
-      render: (text) => (text.length > 120 ? text.slice(0, 120) + "..." : text),
+      render: (text) => (text.length > 200 ? text.slice(0, 200) + "..." : text),
     },
     {
       title: "Action",
@@ -230,13 +231,28 @@ console.log(blogs)
             <Input.TextArea rows={3} placeholder="Enter blog description" />
           </Form.Item>
 
-          {/* Summary */}
           <Form.Item
             name="summary"
             label="Summary"
-            rules={[{ required: true, message: "Please enter a summary" }]}
+            rules={[
+              { required: true, message: "Please enter a summary" },
+              {
+                validator: (_, value) => {
+                  if (value && value.length > 200) {
+                    return Promise.reject(
+                      new Error("Summary must be 150 characters or less")
+                    );
+                  }
+                  return Promise.resolve();
+                },
+              },
+            ]}
           >
-            <Input placeholder="Enter summary" />
+            <Input.TextArea
+              rows={3}
+              placeholder="Enter summary"
+              maxLength={150}
+            />
           </Form.Item>
 
           {/* Source */}
