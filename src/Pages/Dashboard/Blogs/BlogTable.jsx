@@ -29,8 +29,6 @@ console.log(blogs)
 
   const imageUrl = import.meta.env.VITE_IMAGE_URL;
 
-  console.log("dgdfbsbv", imageUrl)
-
   const openModal = (blog = null) => {
     setEditingBlog(blog);
     if (blog) {
@@ -41,7 +39,9 @@ console.log(blogs)
         summary: blog?.summary,
         source: blog?.source,
       });
-      setImagePreview(blog?.image || null);
+      setImagePreview( blog?.image?.startsWith("https")
+                ? blog?.image
+                : `${imageUrl}${blog?.image}`);
     } else {
       form.resetFields();
       setImagePreview(null);
@@ -77,19 +77,39 @@ console.log(blogs)
     formData.append("summary", values.summary);
     formData.append("source", values.source);
 
+    console.log("🟢 Sending Update Request:", {
+      id: editingBlog._id,
+      formData: Object.fromEntries(formData), // Debugging
+    });
+
     try {
       if (editingBlog) {
-        await editBlog({ id: editingBlog.id, formData }).unwrap();
-        Swal.fire("Updated!", "Blog has been updated.", "success");
+        const response = await editBlog({
+          id: editingBlog._id,
+          formData,
+        }).unwrap();
+        if (response?.success) {
+          Swal.fire("Updated!", "Blog has been updated.", "success");
+        } else {
+          Swal.fire("Error!", "Update failed.", "error");
+        }
       } else {
-        await addNewBlog(formData).unwrap();
-        Swal.fire("Added!", "New blog added successfully.", "success");
+        const response = await addNewBlog(formData).unwrap();
+
+        if (response?.success) {
+          Swal.fire("Added!", "New blog added successfully.", "success");
+        } else {
+          Swal.fire("Error!", "Add failed.", "error");
+        }
       }
       closeModal();
     } catch (error) {
+      console.error("🔴 API Error:", error);
       Swal.fire("Error!", "Something went wrong.", "error");
     }
   };
+
+
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -123,9 +143,13 @@ console.log(blogs)
       title: "Image",
       dataIndex: "image",
       key: "image",
-      render: (text) => <img className="w-16 h-8" src={text?.startsWith('http') ? text : `${imageUrl}/${text}`} alt="" />
-        
-         
+      render: (text) => (
+        <img
+          className="w-28 h-12 rounded-3xl"
+          src={text?.startsWith("http") ? text : `${imageUrl}/${text}`}
+          alt=""
+        />
+      ),
     },
 
     {
@@ -136,12 +160,15 @@ console.log(blogs)
     {
       title: "Source",
       dataIndex: "source",
+      width:140,
       key: "source",
     },
     {
       title: "Summary",
       dataIndex: "summary",
       key: "summary",
+      width: 600,
+      render: (text) => (text.length > 120 ? text.slice(0, 120) + "..." : text),
     },
     {
       title: "Action",
@@ -152,7 +179,10 @@ console.log(blogs)
           <Button
             icon={<DeleteOutlined />}
             danger
-            onClick={() => handleDelete(record.id)}
+            onClick={() => {
+              console.log("Record Data:", record);
+              handleDelete(record._id);
+            }}
           />
         </div>
       ),
@@ -161,7 +191,11 @@ console.log(blogs)
 
   return (
     <div>
-      <Button type="primary" className="mb-4" onClick={() => openModal()}>
+      <Button
+        type="primary"
+        className="mb-4 bg-[#023F86]"
+        onClick={() => openModal()}
+      >
         + Add New Blog
       </Button>
       <Table

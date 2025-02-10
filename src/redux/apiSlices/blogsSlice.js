@@ -18,17 +18,17 @@ const blogsSlice = api.injectEndpoints({
         method: "POST",
         body: blogs,
       }),
-      invalidatesTags: ["Blogs"], 
+      invalidatesTags: ["Blogs"],
     }),
 
     // ✅ Edit Blog by ID
     editBlog: builder.mutation({
-      query: ({ id, ...blogData }) => ({
+      query: ({ id, formData }) => ({
         url: `/blog/${id}`,
         method: "PATCH",
-        body: blogData,
+        body: formData,
       }),
-      invalidatesTags: ["Blogs"], 
+      invalidatesTags: ["Blogs"],
     }),
 
     // ✅ Delete Blog by ID
@@ -37,7 +37,7 @@ const blogsSlice = api.injectEndpoints({
         url: `/blog/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Blogs"], 
+      invalidatesTags: ["Blogs"],
     }),
   }),
 });

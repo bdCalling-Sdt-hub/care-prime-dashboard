@@ -26,7 +26,6 @@ export default function Blogs() {
           onClose={() => setIsModalOpen(false)}
         ></BlogModal>
 
-        <h2 className="text-[20px] font-medium">All Blogs</h2>
       </div>
       <BlogTable />
     </div>
