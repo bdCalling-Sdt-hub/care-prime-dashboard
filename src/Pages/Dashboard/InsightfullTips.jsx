@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Button, Modal, Form, Input, Upload, Avatar } from "antd";
+import { Table, Button, Modal, Form, Input, Upload, Avatar, message } from "antd";
 import {
   PlusOutlined,
   EditOutlined,
@@ -74,17 +74,33 @@ const InsightfulTips = () => {
 
   // Handle Add/Edit Submit
   const handleSubmit = async (values) => {
+    try{
     const formData = new FormData();
     formData.append("name", values.name);
     formData.append("image", image);
 
     if (editingTip) {
-      await editInsightTip({ id: editingTip._id, updatedTip: formData });
+      const response = await editInsightTip({
+        id: editingTip._id,
+        updatedTip: formData,
+      });
+      if (response) {
+        message.success("Insightfull tips updated successfully");
+      }
     } else {
-      await addInsightTip(formData);
+     const response = await addInsightTip(formData);
+      if (response) {
+        message.success("Add Insightfull tips successfully");
+      }
     }
 
     handleCloseModal();
+     form.resetFields();
+  }
+     catch (error) {
+      message.error("Operation failed");
+      console.error("Error:", error);
+    }
   };
 
   // Handle Delete

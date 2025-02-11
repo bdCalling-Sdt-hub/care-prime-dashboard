@@ -1,101 +1,223 @@
-import React, { useEffect, useState } from "react";
-import card1 from "../../assets/SUBS1.jpg";
-import card2 from "../../assets/SUBS2.png";
-import card3 from "../../assets/SUBS3.png";
-import { FaCircleCheck } from "react-icons/fa6";
-import { IoArrowBackCircleOutline } from "react-icons/io5";
-import { Card, Space, Button } from "antd";
-import { useGetAllPackagesQuery } from "../../redux/apiSlices/packagesSlice";
+import React, { useState } from "react";
+import { Card, Button, Modal, Form, Input, List, message, Select } from "antd";
+import { EditOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  useAddPackageMutation,
+  useDeletePackageMutation,
+  useGetAllPackagesQuery,
+  useUpdatePackageMutation,
+} from "../../redux/apiSlices/packagesSlice";
+import FeaturedInput from "../../components/common/PackegeFearuedInput";
+import Swal from "sweetalert2";
 
-const text = [
-  { id: 1, des: "But I must explain to you how all" },
-  { id: 2, des: "But I must explain to you how all" },
-  { id: 3, des: "But I must explain to you how all" },
-  { id: 3, des: "But I must explain to you how all" },
-];
+const { Option } = Select;
 
-const List = () => {
-  return (
-    <ul className="flex flex-col items-center gap-y-1.5 mt-5">
-      {text.map((item) => (
-        <li key={item.id} className="text-[12px] text-[c4c6ca] list-disc ">
-          {item.des}
-        </li>
-      ))}
-    </ul>
-  );
-};
-const SubscriptionCard = () => {
-  return (
-    <Space direction="vertical" size={16}>
-      <Card
-        title={
-          <div className="flex flex-col items-center gap-2 mt-6">
-            <p className=" text-[16px] font-semibold">1 Month Interval</p>
-            <p className="text-dashboard text-[24px]">Price: $10</p>
-          </div>
-        }
-        style={{
-          width: 245,
-          height: 366,
-          backgroundColor: "#f6faff",
-          borderRadius: "16px",
-        }}
-      >
-        <div className="h-[200px] flex flex-col items-center justify-between">
-          <List />
-          <Button
-            className="rounded-[12px] px-14 py-5 mt-5"
-            style={{
-              backgroundColor: "#e5e7eb",
-              color: "",
-              border: "",
-              transition: "background-color 0.3s ease",
-            }}
-            onMouseEnter={(e) => (
-              (e.target.style.backgroundColor = "#023f86"),
-              (e.target.style.color = "#ffffff"),
-              (e.target.style.border = "#ffffff")
-            )}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = "#e5e7eb";
-              e.target.style.color = "#000000";
-              e.target.style.border = "1px solid transparent";
-            }}
-          >
-            Edit Details
-          </Button>
-        </div>
-      </Card>
-    </Space>
-  );
-};
 const PackagesPlans = () => {
-const {data}=useGetAllPackagesQuery()
-console.log(data)
+  const { data, isLoading } = useGetAllPackagesQuery();
+  const [addPackage] = useAddPackageMutation();
+  const [updatePackage] = useUpdatePackageMutation();
+  const [deletePackage] = useDeletePackageMutation();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentPackage, setCurrentPackage] = useState(null);
+  const [form] = Form.useForm();
+
+  const showModal = (pkg = null) => {
+    setIsEditing(!!pkg);
+    setCurrentPackage(pkg);
+    setIsModalOpen(true);
+
+    if (pkg) {
+      form.setFieldsValue({
+        title: pkg.title,
+        description: pkg.description,
+        price: Number(pkg.price),
+        duration: pkg.duration,
+        features: pkg.features || [],
+      });
+    } else {
+      form.resetFields();
+    }
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    form.resetFields();
+  };
+
+  const handleDelete = async (id) => {
+    // SweetAlert Confirmation
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this tip!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#023F86",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          // Delete the Insight Tip
+          await deletePackage(id);
+
+          // Show success message
+          Swal.fire("Deleted!", "The insight tip has been deleted.", "success");
+
+          // Close the modal after 1 second
+          setTimeout(() => {
+            handleCancel();
+          }, 1000); // 1 second delay
+        } catch (error) {
+          // Show error message in case of failure
+          Swal.fire("Error!", "Failed to delete the insight tip.", "error");
+        }
+      }
+    });
+  };
+
+  const handleSubmit = async (values) => {
+    console.log("sfdhgds", values);
+    try {
+      const formattedData = {
+        title: values.title,
+        description: values.description,
+        price: Number(values.price), // ✅ Price কে সংখ্যায় রূপান্তর
+        duration: values.duration,
+        features: values.features.filter((f) => f.trim() !== ""), // ✅ ফাঁকা ফিচার বাদ দেয়া
+      };
+
+      if (isEditing) {
+        await updatePackage({
+          id: currentPackage._id,
+          updatedData: formattedData,
+        }).unwrap();
+        message.success("Package updated successfully");
+      } else {
+        await addPackage(formattedData).unwrap();
+        message.success("Package added successfully");
+      }
+
+      setIsModalOpen(false);
+      form.resetFields();
+    } catch (error) {
+      message.error("Operation failed");
+      console.error("Error:", error);
+    }
+  };
 
   return (
-    <div className="mx-14 mt-24">
-      {/* header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold flex items-center gap-1">
-          <IoArrowBackCircleOutline size={26} className="cursor-pointer" />
-          PackagesPlans
-         plans
-        </h1>
-        {/* <button className="bg-dashboard text-white h-10 px-4 rounded-md">
-          Create PackagesPlans
-        
-        </button> */}
+    <div className="p-6">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-xl font-semibold">Packages Plans</h2>
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={() => showModal()}
+        >
+          Add Package
+        </Button>
       </div>
-      <div className="w-full flex items-start justify-between gap-3 mt-8 flex-wrap">
-        <SubscriptionCard />
-        <SubscriptionCard />
-        <SubscriptionCard />
-        <SubscriptionCard />
-        <SubscriptionCard />
-        <SubscriptionCard />
-      </div>
+
+      {isLoading ? (
+        <p>Loading packages...</p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {data?.data?.map((pkg) => (
+            <Card
+              key={pkg.id}
+              title={pkg.title}
+              extra={
+                <div>
+                  <EditOutlined
+                    onClick={() => showModal(pkg)}
+                    className="text-blue-500 mr-2 cursor-pointer"
+                  />
+
+                  <DeleteOutlined
+                    onClick={() => handleDelete(pkg._id)}
+                    className="text-red-500 cursor-pointer"
+                  />
+                </div>
+              }
+              bordered={true}
+            >
+              <p>{pkg.description}</p>
+              <p>
+                <strong>Price:</strong> ${pkg.price}
+              </p>
+              <p>
+                <strong>Duration:</strong> {pkg.duration}
+              </p>
+              <List
+                size="small"
+                dataSource={pkg.features}
+                renderItem={(feature) => <List.Item>- {feature}</List.Item>}
+              />
+            </Card>
+          ))}
+        </div>
+      )}
+
+      <Modal
+        title={isEditing ? "Edit Package" : "Add Package"}
+        open={isModalOpen}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <Form form={form} layout="vertical" onFinish={handleSubmit}>
+          <Form.Item
+            name="title"
+            label="Title"
+            rules={[{ required: true, message: "Title is required" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="description"
+            label="Description"
+            rules={[{ required: true, message: "Description is required" }]}
+          >
+            <Input.TextArea />
+          </Form.Item>
+          <Form.Item
+            name="price"
+            label="Price"
+            rules={[{ required: true, message: "Price is required" }]}
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item
+            name="duration"
+            label="Duration"
+            rules={[{ required: true, message: "Duration is required" }]}
+          >
+            <Select>
+              <Select.Option value="1 month">1 Month</Select.Option>
+              <Select.Option value="3 months">3 Months</Select.Option>
+              <Select.Option value="6 months">6 Months</Select.Option>
+              <Select.Option value="1 year">1 Year</Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item
+            name="features"
+            label="Features"
+            rules={[
+              { required: true, message: "At least two features are required" },
+            ]}
+          >
+            <FeaturedInput />
+          </Form.Item>
+
+          <div className="flex justify-end gap-2 mt-4">
+            <Button onClick={handleCancel}>Cancel</Button>
+            <Button type="primary" htmlType="submit" className="bg-[#023F86]">
+              {isEditing ? "Update Package" : "Add Package"}
+            </Button>
+          </div>
+        </Form>
+      </Modal>
     </div>
   );
 };
