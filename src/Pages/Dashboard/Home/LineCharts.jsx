@@ -89,7 +89,7 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Responsi
 
 
 
-export default function LineCharts() {
+export default function LineCharts({users}) {
   const data = [
     { name: 'Mo', pv: 2400, amt: 2400 },
     { name: 'Tu', pv: 1398, amt: 2210 },
@@ -104,13 +104,13 @@ export default function LineCharts() {
     <div className="w-full h-[330px] bg-white p-4 rounded-md ">
 
     <ResponsiveContainer width="100%" height={290}>
-      <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+      <LineChart data={users} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
         <CartesianGrid strokeDasharray="3 3" strokeWidth={0.5} vertical={false}/>
-        <XAxis dataKey="name" />
+        <XAxis dataKey="month" />
         <YAxis />
         <Tooltip />
         {/* <Legend /> */}
-        <Line type="monotone" dataKey="pv" stroke="#023f86" strokeWidth={2} />
+        <Line type="monotone" dataKey="total" stroke="#023f86" strokeWidth={2} />
         
       </LineChart>
     </ResponsiveContainer>

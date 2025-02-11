@@ -14,7 +14,6 @@ import AboutUs from "../Pages/Dashboard/AboutUs";
 import PrivacyPolicy from "../Pages/Dashboard/PrivacyPolicy/PrivacyPolicy.jsx";
 // import ChangePassword from "../Pages/Auth/ChangePassword";
 import Login from "../Pages/Auth/Login";
-import Subscription from "../Pages/Dashboard/Subscription";
 import Profile from "../Pages/Dashboard/Profile";
 import ForgotPassword from "../Pages/Auth/ForgotPassword";
 import VerifyOtp from "../Pages/Auth/VerifyOtp";
@@ -30,6 +29,7 @@ import Faq from "../Pages/Dashboard/FAQ/Faq";
 import TermsAndCondition from "../Pages/Dashboard/TermsAndCondition/TermsAndCondition";
 import ChangePassword from "../Pages/Dashboard/AdminProfile/ChangePassword.jsx";
 import Insight from "../Pages/Dashboard/InsightfullTips.jsx";
+import PackagesPlans from "../Pages/Dashboard/Packages.jsx";
 
 const router = createBrowserRouter([
   {
@@ -63,7 +63,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/subscription",
-        element: <Subscription />,
+        element: <PackagesPlans />,
       },
       {
         path: "/admin",

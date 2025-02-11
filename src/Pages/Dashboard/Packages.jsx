@@ -5,6 +5,7 @@ import card3 from "../../assets/SUBS3.png";
 import { FaCircleCheck } from "react-icons/fa6";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { Card, Space, Button } from "antd";
+import { useGetAllPackagesQuery } from "../../redux/apiSlices/packagesSlice";
 
 const text = [
   { id: 1, des: "But I must explain to you how all" },
@@ -69,17 +70,22 @@ const SubscriptionCard = () => {
     </Space>
   );
 };
-const Subscription = () => {
+const PackagesPlans = () => {
+const {data}=useGetAllPackagesQuery()
+console.log(data)
+
   return (
     <div className="mx-14 mt-24">
       {/* header */}
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold flex items-center gap-1">
           <IoArrowBackCircleOutline size={26} className="cursor-pointer" />
-          Subscription Plans
+          PackagesPlans
+         plans
         </h1>
         {/* <button className="bg-dashboard text-white h-10 px-4 rounded-md">
-          Create Subscription
+          Create PackagesPlans
+        
         </button> */}
       </div>
       <div className="w-full flex items-start justify-between gap-3 mt-8 flex-wrap">
@@ -94,4 +100,4 @@ const Subscription = () => {
   );
 };
 
-export default Subscription;
+export default PackagesPlans;
