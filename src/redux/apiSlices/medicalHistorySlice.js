@@ -12,7 +12,7 @@ const medicalHistorySlice = api.injectEndpoints({
     }),
 
     // POST (Create) - Add New FAQ
-    createMedicalHistory: builder.mutation({
+    addMedicalHistory: builder.mutation({
       query: (newData) => ({
         url: "/medication",
         method: "POST",
@@ -23,10 +23,10 @@ const medicalHistorySlice = api.injectEndpoints({
 
     // PATCH (Update) - Update Existing FAQ
     updateMedicalHistory: builder.mutation({
-      query: ({ id, updatedData }) => ({
+      query: ({ id, updateHistory }) => ({
         url: `/medication/${id}`,
         method: "PATCH",
-        body: updatedData,
+        body: updateHistory,
       }),
       invalidatesTags: ["FAQ"],
     }),
@@ -43,8 +43,8 @@ const medicalHistorySlice = api.injectEndpoints({
 });
 
 export const {
-  useMedicalHistoryQuery,
-  useCreateMedicalHistoryMutation,
+  useGetMedicalHistoryQuery,
+  useAddMedicalHistoryMutation,
   useUpdateMedicalHistoryMutation,
   useDeleteMedicalHistoryMutation,
 } = medicalHistorySlice;

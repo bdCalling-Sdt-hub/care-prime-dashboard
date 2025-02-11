@@ -29,35 +29,34 @@ const InsightfulTips = () => {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [form] = Form.useForm();
-  console.log(data)
+  console.log(data);
 
   // Open Modal for Add/Edit
- const handleOpenModal = (tip = null) => {
-   setEditingTip(tip);
+  const handleOpenModal = (tip = null) => {
+    setEditingTip(tip);
 
-   if (tip) {
-     form.setFieldsValue({ name: tip.name });
+    if (tip) {
+      form.setFieldsValue({ name: tip.name });
 
-     // Image preview সেট করা
-     const imageSrc = tip?.image?.startsWith("https")
-       ? tip.image
-       : `${imageUrl}/${tip.image}`;
+      // Image preview সেট করা
+      const imageSrc = tip?.image?.startsWith("https")
+        ? tip.image
+        : `${imageUrl}/${tip.image}`;
 
-     setImagePreview(imageSrc);
-   } else {
-     form.resetFields();
-     setImagePreview(null);
-   }
+      setImagePreview(imageSrc);
+    } else {
+      form.resetFields();
+      setImagePreview(null);
+    }
 
-   setIsModalOpen(true);
- };
-
+    setIsModalOpen(true);
+  };
 
   // Close Modal
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingTip(null);
-     setImage(null);
+    setImage(null);
     setImagePreview(null);
   };
 
@@ -73,12 +72,11 @@ const InsightfulTips = () => {
     reader.readAsDataURL(file);
   };
 
-
   // Handle Add/Edit Submit
   const handleSubmit = async (values) => {
     const formData = new FormData();
     formData.append("name", values.name);
-    formData.append("image", image); // Send the image file itself, not the preview
+    formData.append("image", image);
 
     if (editingTip) {
       await editInsightTip({ id: editingTip._id, updatedTip: formData });
@@ -89,10 +87,8 @@ const InsightfulTips = () => {
     handleCloseModal();
   };
 
-
   // Handle Delete
   const handleDelete = async (id) => {
-    // SweetAlert Confirmation
     Swal.fire({
       title: "Are you sure?",
       text: "Once deleted, you will not be able to recover this tip!",
@@ -106,22 +102,18 @@ const InsightfulTips = () => {
         try {
           // Delete the Insight Tip
           await deleteInsightTip(id);
-
-          // Show success message
           Swal.fire("Deleted!", "The insight tip has been deleted.", "success");
 
           // Close the modal after 1 second
           setTimeout(() => {
             handleCloseModal();
-          }, 1000); // 1 second delay
+          }, 1000);
         } catch (error) {
-          // Show error message in case of failure
           Swal.fire("Error!", "Failed to delete the insight tip.", "error");
         }
       }
     });
   };
-
 
   // Table Columns
   const columns = [
@@ -195,7 +187,7 @@ const InsightfulTips = () => {
         title={editingTip ? "Edit Insight Tip" : "Add New Insight Tip"}
         open={isModalOpen}
         onCancel={handleCloseModal}
-        onOk={() => form.submit()}
+        footer={null}
       >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Form.Item
@@ -223,6 +215,12 @@ const InsightfulTips = () => {
               </Upload>
             </div>
           </Form.Item>
+          <div className="flex justify-end gap-2 mt-4">
+            <Button onClick={handleCloseModal}>Cancel</Button>
+            <Button type="primary" htmlType="submit" className="bg-[#023F86]">
+              {editingTip ? "Update Tips" : "Add Tips"}
+            </Button>
+          </div>
         </Form>
       </Modal>
     </div>

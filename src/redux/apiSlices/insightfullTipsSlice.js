@@ -23,10 +23,10 @@ const insightfullTipsSlice = api.injectEndpoints({
 
     // ✅ PATCH: Update Existing Tip
     editInsightTip: builder.mutation({
-      query: ({ id, formData }) => ({
+      query: ({ id, updatedTip }) => ({
         url: `/tips/${id}`,
         method: "PATCH",
-        body: formData,
+        body: updatedTip,
       }),
       invalidatesTags: ["Tips"],
     }),

@@ -82,7 +82,7 @@ const BlogTable = () => {
 
     console.log("🟢 Sending Update Request:", {
       id: editingBlog._id,
-      formData: Object.fromEntries(formData), // Debugging
+      formData: Object.fromEntries(formData), 
     });
 
     try {
