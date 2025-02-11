@@ -1,18 +1,15 @@
-import { api } from "../api/baseApi"
+import { api } from "../api/baseApi";
 
 const subscriptionSlice = api.injectEndpoints({
-    endpoints: (builder)=>({
-        getAllSubscritption: builder.query({
-            query: ()=> {
-                return {
-                  url: `/subscription`,
-                  method: "GET",
-                };
-            },
-            providesTags: ["Blogs"],
-        }),
-    })
-})
+  endpoints: (builder) => ({
+    getAllSubscription: builder.query({
+      query: () => ({
+        url: `/subscription`,
+        method: "GET",
+      }),
+      providesTags: ["subscription"], 
+    }),
+  }),
+});
 
-export const {useGetAllSubscriptionQuery}=subscriptionSlice;
-
+export const { useGetAllSubscriptionQuery } = subscriptionSlice;

@@ -30,6 +30,7 @@ import TermsAndCondition from "../Pages/Dashboard/TermsAndCondition/TermsAndCond
 import ChangePassword from "../Pages/Dashboard/AdminProfile/ChangePassword.jsx";
 import Insight from "../Pages/Dashboard/InsightfullTips.jsx";
 import PackagesPlans from "../Pages/Dashboard/Packages.jsx";
+import Subscription from "../Pages/Dashboard/Subscription.jsx";
 
 const router = createBrowserRouter([
   {
@@ -63,7 +64,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/subscription",
-        element: <PackagesPlans />,
+        element: <Subscription />,
       },
       {
         path: "/packagesplans",

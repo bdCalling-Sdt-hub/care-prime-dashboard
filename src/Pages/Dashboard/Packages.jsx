@@ -110,10 +110,11 @@ const PackagesPlans = () => {
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">Packages Plans</h2>
+        <h2 className="text-2xl font-bold text-gray-800">Packages Plans</h2>
         <Button
           type="primary"
           icon={<PlusOutlined />}
+          className="bg-[#023F86] text-white px-5 py-2 rounded-lg shadow-lg hover:bg-[#012F60] transition-all"
           onClick={() => showModal()}
         >
           Add Package
@@ -123,37 +124,44 @@ const PackagesPlans = () => {
       {isLoading ? (
         <p>Loading packages...</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {data?.data?.map((pkg) => (
             <Card
               key={pkg.id}
-              title={pkg.title}
+              title={<span className="text-lg font-semibold">{pkg.title}</span>}
+              bordered={false}
+              className="shadow-lg rounded-xl border border-gray-200 hover:shadow-2xl transition-all"
               extra={
-                <div>
+                <div className="flex gap-3">
                   <EditOutlined
                     onClick={() => showModal(pkg)}
-                    className="text-blue-500 mr-2 cursor-pointer"
+                    className="text-blue-600 text-xl cursor-pointer hover:text-blue-800 transition-all"
                   />
-
                   <DeleteOutlined
                     onClick={() => handleDelete(pkg._id)}
-                    className="text-red-500 cursor-pointer"
+                    className="text-red-600 text-xl cursor-pointer hover:text-red-800 transition-all"
                   />
                 </div>
               }
-              bordered={true}
             >
-              <p>{pkg.description}</p>
-              <p>
-                <strong>Price:</strong> ${pkg.price}
+              <p className="mb-2">
+                <span>Price:</span>{" "}
+                <strong className="text-green-600 font-semibold text-2xl">
+                  ${pkg.price}
+                </strong>
               </p>
+              <p className="text-gray-700">{pkg.description}</p>
+
               <p>
-                <strong>Duration:</strong> {pkg.duration}
+                <span>Duration:</span> <strong>{pkg.duration}</strong>
               </p>
               <List
                 size="small"
+                className="mt-2"
                 dataSource={pkg.features}
-                renderItem={(feature) => <List.Item>- {feature}</List.Item>}
+                renderItem={(feature) => (
+                  <List.Item className="text-gray-600">✔ {feature}</List.Item>
+                )}
               />
             </Card>
           ))}
@@ -165,6 +173,7 @@ const PackagesPlans = () => {
         open={isModalOpen}
         onCancel={handleCancel}
         footer={null}
+        className="rounded-lg"
       >
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Form.Item
@@ -212,7 +221,11 @@ const PackagesPlans = () => {
 
           <div className="flex justify-end gap-2 mt-4">
             <Button onClick={handleCancel}>Cancel</Button>
-            <Button type="primary" htmlType="submit" className="bg-[#023F86]">
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="bg-[#023F86] text-white px-4 py-2 rounded-lg hover:bg-[#012F60] transition-all"
+            >
               {isEditing ? "Update Package" : "Add Package"}
             </Button>
           </div>
