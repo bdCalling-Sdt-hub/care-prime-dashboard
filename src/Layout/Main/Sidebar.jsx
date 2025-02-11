@@ -91,15 +91,16 @@ const Sidebar = () => {
     //     label: <Link to="/events" >Events</Link>
     // },
     {
-      key: "/subscription",
-      icon: <HiTicket size={24} />,
-      label: <Link to="/subscription">Subscription</Link>,
-    },
-    {
       key: "/packagesplans",
       icon: <HiTicket size={24} />,
       label: <Link to="/packagesplans">Packages</Link>,
     },
+    {
+      key: "/subscription",
+      icon: <HiTicket size={24} />,
+      label: <Link to="/subscription">Subscription</Link>,
+    },
+
     {
       key: "subMenuSetting",
       icon: <IoSettingsOutline size={24} />,
@@ -158,11 +159,11 @@ const Sidebar = () => {
         // },
       ],
     },
-    // {
-    //     key: "/logout",
-    //     icon: <IoIosLogOut size={24} />,
-    //     label: <p onClick={handleLogout}>Logout</p>
-    // },
+    {
+        key: "/logout",
+        icon: <IoIosLogOut size={24} />,
+        label: <p onClick={handleLogout}>Logout</p>
+    },
   ];
 
   useEffect(() => {

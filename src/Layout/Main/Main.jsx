@@ -14,9 +14,9 @@ const Main = () => {
 
             {/* Main container with header */}
             <div className='col-span-10' >
-                {/* <div className='h-[68px] flex items-center justify-end pr-5'>
+                <div className='h-[68px] flex items-center justify-end pr-5'>
                     <Header />
-                </div> */}
+                </div>
 
                 <div className='bg-[#F6F6F6]  h-[calc(100vh)]'> 
                     {/* -68px */}

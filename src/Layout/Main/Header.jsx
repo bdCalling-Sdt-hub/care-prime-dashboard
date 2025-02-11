@@ -4,10 +4,15 @@ import { Link } from 'react-router-dom';
 import { FaRegBell } from 'react-icons/fa6';
 import { Badge } from 'antd';
 import { useUser } from '../../provider/User';
+import { useGetUserQuery } from '../../redux/apiSlices/authSlice';
 
 const Header = () => {
-    const {user}  = useUser();
-    const src = user?.image?.startsWith("https") ? user?.image : `${imageUrl}/${user?.image}`
+    const { data: user, isLoading } = useGetUserQuery();
+    console.log(user)
+    // const {user}  = useUser();
+    const src = user?.data?.profile?.startsWith("https")
+      ? user?.data?.profile
+      : `${imageUrl}/${user?.data?.profile}`;
     return (
         <div className='flex items-center gap-5 justify-end'>
             <Link to="/notification" className='h-fit mt-[10px]'> 
