@@ -1,24 +1,18 @@
-import React from "react";
+
 import { Table, Spin, Tag } from "antd";
 import { useGetAllSubscriptionQuery } from "../../redux/apiSlices/subscriptionSlice";
+import { imageUrl } from "../../redux/api/baseApi";
+import React, { useState } from "react";
+import moment from "moment";
 // import { useGetAllSubscriptionQuery } from "../../redux/apiSlices/subscriptionSlice";
 
 const Subscription = () => {
+   const [image, setImage] = useState(null);
+   const [imagePreview, setImagePreview] = useState(null);
   const { data, isLoading } = useGetAllSubscriptionQuery();
   console.log(data?.data?.subscriptions);
 
-  if (isLoading) {
-    return <Spin size="large" className="flex justify-center mt-10" />;
-  }
-
-  if (!data?.data || data.data.length === 0) {
-    return (
-      <p className="text-center text-gray-500 mt-10">
-        No subscription data found
-      </p>
-    );
-  }
-
+   const tableData = data?.data?.subscriptions;
 
   const columns = [
     {
@@ -28,8 +22,25 @@ const Subscription = () => {
       render: (text, record, index) => index + 1,
     },
     {
+      title: "Image",
+      dataIndex: ["user", "profile"],
+      key: "image",
+      render: (text) => (
+        <img
+          className="w-28 h-16 rounded-xl object-cover"
+          src={text?.startsWith("http") ? text : `${imageUrl}/${text}`}
+          alt=""
+        />
+      ),
+    },
+    {
+      title: "user",
+      dataIndex: ["user", "name"],
+      key: "user",
+    },
+    {
       title: "Package",
-      dataIndex: "package",
+      dataIndex: ["package", "title"],
       key: "package",
     },
     {
@@ -45,13 +56,15 @@ const Subscription = () => {
     },
     {
       title: "Start Date",
-      dataIndex: "startDate",
-      key: "startDate",
+      dataIndex: "currentPeriodStart",
+      key: "currentPeriodStart",
+      render: (text) => <p>{moment(text).format("L")}</p>,
     },
     {
       title: "End Date",
       dataIndex: "endDate",
       key: "endDate",
+      render: (text) => <p>{moment(text).format("L")}</p>,
     },
     {
       title: "Status",
@@ -65,23 +78,13 @@ const Subscription = () => {
     },
   ];
 
-
-  const tableData = data?.data?.subscriptions.map((item, index) => ({
-    key: index,
-    package: item.package.title,
-    price: item.price,
-    trxId: item.trxId,
-    startDate: new Date(item.currentPeriodStart).toLocaleDateString(),
-    endDate: new Date(item.currentPeriodEnd).toLocaleDateString(),
-    status: item.status,
-  }));
-
   return (
-    <div className="p-6">
+    <div className="">
       <h2 className="text-xl font-semibold mb-4">Subscription History</h2>
       <Table
         columns={columns}
         dataSource={tableData}
+        loading={isLoading}
         pagination={{ pageSize: 10 }}
       />
     </div>

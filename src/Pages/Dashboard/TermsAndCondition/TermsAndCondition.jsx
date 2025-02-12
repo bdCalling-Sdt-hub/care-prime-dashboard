@@ -5,8 +5,16 @@ import { Button, Tabs } from "antd";
 
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import TermsAndConModal from "./TermsAndConModal";
+import { useTermsAndConditionQuery } from "../../../redux/apiSlices/termsAndConditionSlice";
 
 const TermsAndConArticle = () => {
+  const {data, isLoading}=useTermsAndConditionQuery()
+  console.log(data)
+
+  if(isLoading){
+    return <div>Loading ...</div>
+  }
+
   return (
     <div className="w-full text-left text-lg leading-6 mt-20">
       <h2 className="font-semibold text-[24px]">Terms And Conditions</h2>

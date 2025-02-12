@@ -192,13 +192,16 @@ const BlogTable = () => {
 
   return (
     <div>
-      <Button
-        type="primary"
-        className="mb-4 bg-[#023F86]"
-        onClick={() => openModal()}
-      >
-        + Add New Blog
-      </Button>
+      <div className="flex justify-between ">
+        <p className="text-xl font-semibold">All Blogs</p>
+        <Button
+          type="primary"
+          className="mb-4 bg-[#023F86]"
+          onClick={() => openModal()}
+        >
+          + Add New Blog
+        </Button>
+      </div>
       <Table
         columns={columns}
         dataSource={Array.isArray(blogs?.data?.blogs) ? blogs.data.blogs : []}

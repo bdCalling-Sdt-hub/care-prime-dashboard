@@ -6,8 +6,8 @@ import Earnings from "../Pages/Dashboard/Earnings";
 import Artists from "../Pages/Dashboard/Artists";
 import Users from "../Pages/Dashboard/Users";
 import Admin from "../Pages/Dashboard/Admin";
-import Contents from "../Pages/Dashboard/Contents/Contents";
-import Category from "../Pages/Dashboard/Category";
+// import Contents from "../Pages/Dashboard/Contents/Contents";
+// import Category from "../Pages/Dashboard/Category";
 import Events from "../Pages/Dashboard/Events";
 import Banner from "../Pages/Dashboard/Banner";
 import AboutUs from "../Pages/Dashboard/AboutUs";
@@ -31,6 +31,8 @@ import ChangePassword from "../Pages/Dashboard/AdminProfile/ChangePassword.jsx";
 import Insight from "../Pages/Dashboard/InsightfullTips.jsx";
 import PackagesPlans from "../Pages/Dashboard/Packages.jsx";
 import Subscription from "../Pages/Dashboard/Subscription.jsx";
+import Contents from "../Pages/Dashboard/Category/Category.jsx";
+import Category from "../Pages/Dashboard/Category/Category.jsx";
 
 const router = createBrowserRouter([
   {
@@ -44,7 +46,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/contents",
-        element: <Contents />,
+        element: <Category />,
       },
       {
         path: "/earnings",
@@ -73,10 +75,6 @@ const router = createBrowserRouter([
       {
         path: "/admin",
         element: <Admin />,
-      },
-      {
-        path: "/category",
-        element: <Category />,
       },
       {
         path: "/faq",

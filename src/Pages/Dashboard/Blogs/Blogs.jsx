@@ -19,7 +19,7 @@ export default function Blogs() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <div className="flex flex-col mx-14 mt-24">
+    <div className="flex flex-col ">
       <div className="flex items-center justify-between w-full">
         <BlogModal
           isOpen={isModalOpen}

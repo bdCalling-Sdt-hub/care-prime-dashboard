@@ -7,41 +7,37 @@ import {
   UploadOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import {
-  useAddMedicalHistoryMutation,
-  useDeleteMedicalHistoryMutation,
-  useGetMedicalHistoryQuery,
-  useUpdateMedicalHistoryMutation,
-} from "../../../redux/apiSlices/medicalHistorySlice";
+
 import Swal from "sweetalert2";
 import { imageUrl } from "../../../redux/api/baseApi";
+import { useCategoryQuery, useCreateCategoryMutation, useDeleteCategoryMutation, useUpdateCategoryMutation } from "../../../redux/apiSlices/categorySlice";
 
 const MedicalHistory = () => {
   // API Queries & Mutations
-  const { data, isLoading } = useGetMedicalHistoryQuery();
-  const [addMedicalHistory] = useAddMedicalHistoryMutation();
-  const [updateMedicalHistory] = useUpdateMedicalHistoryMutation();
-  const [deleteMedicalHistory] = useDeleteMedicalHistoryMutation();
+  const { data, isLoading } = useCategoryQuery();
+  const [createCategory] = useCreateCategoryMutation();
+  const [updateCategory] = useUpdateCategoryMutation();
+  const [deleteCategory] = useDeleteCategoryMutation();
 
   // Modal Control & State
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingHistory, setEditingHistory] = useState(null);
+  const [editingCategory, setEditingCategory] = useState(null);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [form] = Form.useForm();
   console.log(data);
 
   // Open Modal for Add/Edit
-  const handleOpenModal = (history = null) => {
-    setEditingHistory(history);
+  const handleOpenModal = (category = null) => {
+    setEditingCategory(category);
 
-    if (history) {
-      form.setFieldsValue({ name: history.name });
+    if (category) {
+      form.setFieldsValue({ name: category.name });
 
       // Image preview সেট করা
-      const imageSrc = history?.image?.startsWith("https")
-        ? history.image
-        : `${imageUrl}/${history.image}`;
+      const imageSrc = category?.image?.startsWith("https")
+        ? category.image
+        : `${imageUrl}/${category.image}`;
 
       setImagePreview(imageSrc);
     } else {
@@ -55,7 +51,7 @@ const MedicalHistory = () => {
   // Close Modal
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setEditingHistory(null);
+    setEditingCategory(null);
     setImage(null);
     setImagePreview(null);
   };
@@ -78,13 +74,13 @@ const MedicalHistory = () => {
     formData.append("name", values.name);
     formData.append("image", image);
 
-    if (editingHistory) {
-      await updateMedicalHistory({
-        id: editingHistory._id,
-        updateHistory: formData,
+    if (editingCategory) {
+      await updateCategory({
+        id: editingCategory._id,
+        updateCategory: formData,
       });
     } else {
-      await addMedicalHistory(formData);
+      await createCategory(formData);
     }
 
     handleCloseModal();
@@ -105,7 +101,7 @@ const MedicalHistory = () => {
       if (result.isConfirmed) {
         try {
           // Delete the Insight Tip
-          await deleteMedicalHistory(id);
+          await deleteCategory(id);
 
           // Show success message
           Swal.fire("Deleted!", "The insight tip has been deleted.", "success");
@@ -136,7 +132,7 @@ const MedicalHistory = () => {
       key: "image",
       render: (text) => (
         <Avatar
-          className="w-20 h-16 rounded-md object-cover"
+          className="w-20 h-16 rounded-md object-cover bg-[#023F86]"
           src={text?.startsWith("http") ? text : `${imageUrl}/${text}`}
           icon={<UserOutlined />}
         />
@@ -147,6 +143,21 @@ const MedicalHistory = () => {
       dataIndex: "name",
       key: "name",
     },
+    {
+      title: "Symptom",
+      key: "symptom",
+      render: (text, record) =>
+        record.symptom ? (
+          <Button type="link" onClick={() => handleEditSymthoms(record)}>
+            Edit Symthoms
+          </Button>
+        ) : (
+          <Button type="link" onClick={() => handleAddSymthoms(record)}>
+            Add Symthoms
+          </Button>
+        ),
+    },
+
     {
       title: "Action",
       key: "action",
@@ -177,21 +188,21 @@ const MedicalHistory = () => {
           className="bg-[#023F86]"
           onClick={() => handleOpenModal()}
         >
-          + Add Medical History
+          Add Medical History
         </Button>
       </div>
 
       {/* Table */}
       <Table
         columns={columns}
-        dataSource={data?.data || []}
+        dataSource={data?.data.categories || []}
         loading={isLoading}
         rowKey="_id"
       />
 
       {/* Modal */}
       <Modal
-        title={editingHistory ? "Edit Medical History" : "Add Medical History"}
+        title={editingCategory ? "Edit Category" : "Add Category"}
         open={isModalOpen}
         onCancel={handleCloseModal}
         footer={null}
@@ -207,11 +218,12 @@ const MedicalHistory = () => {
 
           {/* Image Upload & Preview */}
           <Form.Item name="image" label="Image">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 ">
               <Avatar
                 size={64}
                 src={imagePreview || undefined}
                 icon={!imagePreview ? <UserOutlined /> : null}
+                className="bg-[#023F86]"
               />
               <Upload
                 beforeUpload={() => false}
@@ -226,7 +238,7 @@ const MedicalHistory = () => {
           <div className="flex justify-end gap-2 mt-4">
             <Button onClick={handleCloseModal}>Cancel</Button>
             <Button type="primary" htmlType="submit" className="bg-[#023F86]">
-              {editingHistory ? "Update History" : "Add History"}
+              {editingCategory ? "Update Category" : "Add Category"}
             </Button>
           </div>
         </Form>

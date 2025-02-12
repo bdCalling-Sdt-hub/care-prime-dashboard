@@ -37,7 +37,7 @@ const Sidebar = () => {
     {
       key: "/contents",
       icon: <PiCopyBold size={24} />,
-      label: <Link to="/contents">Contnets</Link>,
+      label: <Link to="/contents">Category</Link>,
     },
     // {
     //   key: "/earnings",
@@ -106,14 +106,7 @@ const Sidebar = () => {
       icon: <IoSettingsOutline size={24} />,
       label: "Settings",
       children: [
-        // {
-        //   key: "/banner",
-        //   label: (
-        //     <Link to="/banner" className="text-white hover:text-white">
-        //       Banner
-        //     </Link>
-        //   ),
-        // },
+      
         {
           key: "/profile",
           label: (
@@ -149,14 +142,6 @@ const Sidebar = () => {
             </Link>
           ),
         },
-        // {
-        //   key: "/change-password",
-        //   label: (
-        //     <Link to="/change-password" className="text-white hover:text-white">
-        //       Change Password
-        //     </Link>
-        //   ),
-        // },
       ],
     },
     {
@@ -193,8 +178,8 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="mt-5 ">
-      <Link to={"/"} className=" flex items-center justify-center py-4">
+    <div className="h-full ">
+      <Link to={"/"} className=" flex items-center  justify-center py-4">
         <p className="text-4xl font-semibold  font-sans tracking-wider text-white">
           CarePrime
         </p>

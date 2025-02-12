@@ -10,27 +10,27 @@ const Edit = () => {
   );
 };
 
-export default function ContentsList() {
-  const [data, setData] = useState([
-    {
-      key: "1",
-      sno: 1,
-      image: products,
-      categoryname: "Fruits",
-    },
-    {
-      key: "2",
-      sno: 2,
-      image: products,
-      categoryname: "Fruits",
-    },
-    {
-      key: "3",
-      sno: 3,
-      image: products,
-      categoryname: "Fruits",
-    },
-  ]);
+export default function ContentsList({data}) {
+  // const [data, setData] = useState([
+  //   {
+  //     key: "1",
+  //     sno: 1,
+  //     image: products,
+  //     categoryname: "Fruits",
+  //   },
+  //   {
+  //     key: "2",
+  //     sno: 2,
+  //     image: products,
+  //     categoryname: "Fruits",
+  //   },
+  //   {
+  //     key: "3",
+  //     sno: 3,
+  //     image: products,
+  //     categoryname: "Fruits",
+  //   },
+  // ]);
 
   // Function to delete a row
   const handleDelete = (key) => {
@@ -55,10 +55,10 @@ export default function ContentsList() {
     },
     {
       title: "Category Name",
-      dataIndex: "categoryname",
-      key: "categoryname",
-      render: (categoryname) => (
-        <p className="text-[#929394]"> {categoryname}</p>
+      dataIndex: "name",
+      key: "name",
+      render: (name) => (
+        <p className="text-[#929394]"> {name}</p>
       ),
     },
     {

@@ -96,7 +96,7 @@ const handleDelete = async (id) => {
 
 
   return (
-    <div className="p-10 shadow rounded-lg">
+    <div className="  rounded-lg">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-semibold">Frequently Asked Questions</h2>
         <Button
@@ -110,7 +110,7 @@ const handleDelete = async (id) => {
       </div>
 
       {/* FAQ List as Card View */}
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-5">
         {isLoading ? (
           <p>Loading FAQs...</p>
         ) : (

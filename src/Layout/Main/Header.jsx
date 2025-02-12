@@ -8,7 +8,7 @@ import { useGetUserQuery } from '../../redux/apiSlices/authSlice';
 
 const Header = () => {
     const { data: user, isLoading } = useGetUserQuery();
-    console.log(user)
+    // console.log(user)
     // const {user}  = useUser();
     const src = user?.data?.profile?.startsWith("https")
       ? user?.data?.profile

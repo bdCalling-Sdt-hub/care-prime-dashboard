@@ -48,11 +48,9 @@ const Home = () => {
   console.log(formattedData);
   return (
     <div>
-      {/* Dashboard Header */}
-      {/* <h1 className="text-2xl font-semibold">Dashboard Overview</h1> */}
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-4 gap-6 h-[120px]">
+      <div className="grid grid-cols-4 gap-6 ">
         {formattedData?.map((stat, index) => (
           <div
             key={index}
