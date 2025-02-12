@@ -33,6 +33,7 @@ import PackagesPlans from "../Pages/Dashboard/Packages.jsx";
 import Subscription from "../Pages/Dashboard/Subscription.jsx";
 import Contents from "../Pages/Dashboard/Category/Category.jsx";
 import Category from "../Pages/Dashboard/Category/Category.jsx";
+import SymptomModal from "../components/common/SymptomModal.jsx";
 
 const router = createBrowserRouter([
   {
@@ -45,7 +46,7 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/contents",
+        path: "/category",
         element: <Category />,
       },
       {
@@ -119,6 +120,10 @@ const router = createBrowserRouter([
       {
         path: "/blogs",
         element: <Blogs />,
+      },
+      {
+        path: "/category/:id",
+        element: <SymptomModal />,
       },
       {
         path: "/medicalhistory",

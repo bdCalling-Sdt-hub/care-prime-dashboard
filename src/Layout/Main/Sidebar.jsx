@@ -35,10 +35,20 @@ const Sidebar = () => {
       label: <Link to="/">Analytics</Link>,
     },
     {
-      key: "/contents",
-      icon: <PiCopyBold size={24} />,
-      label: <Link to="/contents">Category</Link>,
-    },
+  key: "/category",
+  icon: <PiCopyBold size={24} />,
+  label: <Link to="/category">Category</Link>,
+  // children: [
+  //   {
+  //     key: `/category/:id`, 
+  //     label: (
+  //       <Link to={`/category/:id`} className="text-white hover:text-white">
+  //       </Link>
+  //     ),
+  //   },
+  // ],
+},
+
     // {
     //   key: "/earnings",
     //   icon: <TbDatabaseDollar size={24} />,
@@ -106,7 +116,6 @@ const Sidebar = () => {
       icon: <IoSettingsOutline size={24} />,
       label: "Settings",
       children: [
-      
         {
           key: "/profile",
           label: (
@@ -145,9 +154,9 @@ const Sidebar = () => {
       ],
     },
     {
-        key: "/logout",
-        icon: <IoIosLogOut size={24} />,
-        label: <p onClick={handleLogout}>Logout</p>
+      key: "/logout",
+      icon: <IoIosLogOut size={24} />,
+      label: <p onClick={handleLogout}>Logout</p>,
     },
   ];
 
