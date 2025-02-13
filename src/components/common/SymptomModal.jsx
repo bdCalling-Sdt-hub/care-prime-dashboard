@@ -1,28 +1,50 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Input, Button, Form, Space } from "antd";
-import JoditEditor from "jodit-react"; // Jodit React ইনপোর্ট
-import { useUpdateSymptomCategoryQuery } from "../../redux/apiSlices/symptomSlice";
-// import { useUpdateSymptomCategoryQuery } from "./hooks"; // কাস্টম API কুয়েরি হুক
+import { Input, Button, Form, message } from "antd";
+import JoditEditor from "jodit-react";
+import { useAddSymptomCategoryMutation, useGetIdSymptomCategoryQuery, } from "../../redux/apiSlices/symptomSlice";
 
 const SymptomModal = () => {
   const { id } = useParams();
   const [form] = Form.useForm();
   const [data, setData] = useState(null);
+  const [addSymptomCategory] = useAddSymptomCategoryMutation()
 
-  
-  const { data: symptomData, isLoading } = useUpdateSymptomCategoryQuery(id);
-  console.log(data)
+  const { data: symptomData, isLoading } = useGetIdSymptomCategoryQuery(id);  
+  const allSymptomData = symptomData?.data
+
+  useEffect(() => {
+    form.setFieldsValue({
+      tips: allSymptomData?.tips,
+      contents: allSymptomData?.contents,
+    });
+  }, [allSymptomData , form]);
+
 
   useEffect(() => {
     if (symptomData) {
-      setData(symptomData); 
+      setData(symptomData);
     }
   }, [symptomData]);
 
-  const onFinish = (values) => {
-    console.log(values)
+  const onFinish = async(values) => {
+    
+    const data = {
+      category:id , 
+      ...values
+    }  
+
+    await addSymptomCategory(data).then((res)=>{
+     if(res.success){
+      message.success("Operation successfully done")
+     } else{
+      message.error("Operation field")
+     }
+    })
+
+    
   };
+
 
   return (
     <div>
@@ -34,93 +56,84 @@ const SymptomModal = () => {
           {/* Optional Tips Input */}
           <Form.Item label="Tips (Optional)" name="tips">
             <Input.TextArea
+              rows={5}
               defaultValue={data ? data.tips : ""}
               placeholder="Enter tips"
             />
           </Form.Item>
-          <div className="grid grid-cols-2 gap-5">
-            <Form.Item label="Content" name="content" className="">
-              <JoditEditor
-                value={data ? data.content : ""}
-                onChange={(newContent) =>
-                  form.setFieldsValue({ content: newContent })
-                }
-              />
-            </Form.Item>
-            <Form.Item label="Content" name="content">
-              <JoditEditor
-                value={data ? data.content : ""}
-                onChange={(newContent) =>
-                  form.setFieldsValue({ content: newContent })
-                }
-              />
-            </Form.Item>
-          </div>
 
           {/* Content Array Input */}
-          {/* <Form.List
-            name="contentArray"
-            initialValue={
-              data ? data.contentArray : [{ name: "", content: "" }]
-            }
-            rules={[
-              {
-                validator: async (_, names) => {
-                  if (!names || names.length < 1) {
-                    return Promise.reject(new Error("At least one content"));
-                  }
-                },
-              },
-            ]}
-          >
-            {(fields, { add, remove }) => (
-              <>
-                {fields.map(({ key, fieldKey, name, field }, index) => (
-                  <Space
-                    key={key}
-                    style={{ display: "flex", marginBottom: 8 }}
-                    align="baseline"
-                  >
-                    <Form.Item
-                      {...field}
-                      label="Name"
-                      name={[name, "name"]}
-                      fieldKey={[fieldKey, "name"]}
-                      rules={[{ required: true, message: "Name is required" }]}
+
+          <div className="grid grid-cols-2 gap-5">
+            <Form.List name="contents">
+              {(fields, { add, remove }) => (
+                <>
+                  {fields.map(({ key, name, ...restField }) => (
+                    <div key={key} className="border p-4 pb-10 mb-4 rounded-lg">
+                      <Form.Item
+                        {...restField}
+                        label="Header"
+                        name={[name, "name"]}
+                        labelCol={{ span: 24 }}
+                        wrapperCol={{ span: 24 }}
+                        rules={[
+                          { required: true, message: "Name is required" },
+                        ]}
+                      >
+                        <Input />
+                      </Form.Item>
+                      <Form.Item
+                        {...restField}
+                        label="Content"
+                        name={[name, "content"]}
+                        labelCol={{ span: 24 }}
+                        wrapperCol={{ span: 24 }}
+                        rules={[
+                          { required: true, message: "Content is required" },
+                        ]}
+                      >
+                        <JoditEditor
+                          config={{
+                            height: "330px",
+                            
+                          }}
+                          value={
+                            form.getFieldValue([
+                              "contentArray",
+                              name,
+                              "content",
+                            ]) || ""
+                          }
+                          onChange={(newContent) => {
+                            const currentValues =
+                              form.getFieldValue("contentArray") || [];
+                            currentValues[name] = {
+                              ...currentValues[name],
+                              content: newContent,
+                            };
+                            form.setFieldsValue({
+                              contentArray: currentValues,
+                            });
+                          }}
+                        />
+                      </Form.Item>
+                      <Button type="link" onClick={() => remove(name)}>
+                        Remove
+                      </Button>
+                    </div>
+                  ))}
+                  <Form.Item>
+                    <Button
+                      type="dashed"
+                      onClick={() => add({ name: "", content: "" })}
                     >
-                      <Input />
-                    </Form.Item>
-                    <Form.Item
-                      {...field}
-                      label="Content"
-                      name={[name, "content"]}
-                      fieldKey={[fieldKey, "content"]}
-                      rules={[
-                        { required: true, message: "Content is required" },
-                      ]}
-                    > 
-                      <JoditEditor
-                        value={field?.content || ""}
-                        onChange={(newContent) => {
-                          form.setFieldsValue({
-                            contentArray: [{ content: newContent }],
-                          });
-                        }}
-                      />
-                    </Form.Item>
-                    <Button type="link" onClick={() => remove(name)}>
-                      Remove
+                      Add Content
                     </Button>
-                  </Space>
-                ))}
-                <Form.Item>
-                  <Button type="dashed" onClick={() => add()}>
-                    Add Content
-                  </Button>
-                </Form.Item>
-              </>
-            )}
-          </Form.List> */}
+                  </Form.Item>
+                </>
+              )}
+            </Form.List>
+          </div>
 
           <Form.Item>
             <Button type="primary" htmlType="submit">

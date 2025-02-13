@@ -1,6 +1,5 @@
 import { React, useState } from "react";
 import { Input } from "antd";
-import TextEditor from "./TextEditor";
 import { LuPlus } from "react-icons/lu";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Flex, message, Upload } from "antd";

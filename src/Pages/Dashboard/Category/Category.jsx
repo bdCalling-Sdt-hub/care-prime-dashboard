@@ -25,7 +25,7 @@ import {
   useDeleteCategoryMutation,
   useUpdateCategoryMutation,
 } from "../../../redux/apiSlices/categorySlice";
-import { useUpdateSymptomCategoryQuery } from "../../../redux/apiSlices/symptomSlice";
+import { useGetIdSymptomCategoryQuery } from "../../../redux/apiSlices/symptomSlice";
 import SymptomModal from "../../../components/common/SymptomModal";
 import { useNavigate, useParams } from "react-router-dom";
 // import SymptomModal from "./SymptomModal"; // Import the SymptomModal component
@@ -36,7 +36,7 @@ const MedicalHistory = () => {
   const [createCategory] = useCreateCategoryMutation();
   const [updateCategory] = useUpdateCategoryMutation();
   const [deleteCategory] = useDeleteCategoryMutation();
-  const {data:get} = useUpdateSymptomCategoryQuery()
+  const { data: get } = useGetIdSymptomCategoryQuery();
 console.log(get)
   // Modal Control & State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -89,16 +89,20 @@ console.log(get)
   };
 
   // Handle Image Upload Preview
-  const handleImageChange = (info) => {
-    const file = info.file;
-    setImage(file);
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-    };
-    reader.readAsDataURL(file);
-  };
+   const handleImageChange = (info) => {
+     const file = info.file;
+     if (file.type !== "image/png") {
+       message.error("Only PNG images are allowed!"); 
+       return; 
+     }
+     
+     setImage(file);
+     const reader = new FileReader();
+     reader.onloadend = () => {
+       setImagePreview(reader.result);
+     };
+     reader.readAsDataURL(file);
+   };
 
   // Handle Add/Edit Submit
   const handleSubmit = async (values) => {
@@ -214,14 +218,14 @@ console.log(get)
     <div>
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold">All Medical History</h2>
+        <h2 className="text-lg font-semibold">All Category</h2>
         <Button
           type="primary"
           icon={<PlusOutlined />}
           className="bg-[#023F86]"
           onClick={() => handleOpenCategoryModal()}
         >
-          Add Medical History
+          Add Category
         </Button>
       </div>
 
@@ -259,9 +263,12 @@ console.log(get)
                 className="bg-[#023F86]"
               />
               <Upload
-                beforeUpload={() => false}
+                beforeUpload={(file) => {
+                  // Return false to prevent automatic upload since we're manually handling the file
+                  return false;
+                }}
                 showUploadList={false}
-                onChange={handleImageChange}
+                onChange={handleImageChange} 
               >
                 <Button icon={<UploadOutlined />}>Upload</Button>
               </Upload>

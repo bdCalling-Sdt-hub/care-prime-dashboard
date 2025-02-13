@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Button, Modal, Form, Input, Upload, Avatar } from "antd";
+import { Table, Button, Modal, Form, Input, Upload, Avatar, message } from "antd";
 import {
   PlusOutlined,
   EditOutlined,
@@ -38,7 +38,7 @@ const MedicalHistory = () => {
     if (history) {
       form.setFieldsValue({ name: history.name });
 
-      // Image preview সেট করা
+      // Image preview set
       const imageSrc = history?.image?.startsWith("https")
         ? history.image
         : `${imageUrl}/${history.image}`;
@@ -74,20 +74,29 @@ const MedicalHistory = () => {
 
   // Handle Add/Edit Submit
   const handleSubmit = async (values) => {
-    const formData = new FormData();
-    formData.append("name", values.name);
-    formData.append("image", image);
+   try {
+     const formData = new FormData();
+     formData.append("name", values.name);
+     formData.append("image", image);
 
-    if (editingHistory) {
-      await updateMedicalHistory({
-        id: editingHistory._id,
-        updateHistory: formData,
-      });
-    } else {
-      await addMedicalHistory(formData);
-    }
-
-    handleCloseModal();
+     if (editingHistory) {
+       const res = await updateMedicalHistory({
+         id: editingHistory._id,
+         updateHistory: formData,
+       });
+       if (res) {
+         message.success("Medecal history succefully updated");
+       }
+     } else {
+       const res = await addMedicalHistory(formData);
+       message.success("Medical history succefully add");
+       console.log(res)
+     }
+     handleCloseModal();
+   } catch (error) {
+     message.error("Operation failed");
+     console.error("Error:", error);
+   }
   };
 
   // Handle Delete

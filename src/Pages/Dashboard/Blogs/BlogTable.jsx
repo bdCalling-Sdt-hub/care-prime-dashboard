@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Table, Button, Modal, Form, Input, Upload, Avatar } from "antd";
+import { Table, Button, Modal, Form, Input, Upload, Avatar, message } from "antd";
 import {
   EditOutlined,
   DeleteOutlined,
@@ -70,47 +70,47 @@ const BlogTable = () => {
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = async (values) => {
-    const formData = new FormData();
-    if (image) {
-      formData.append("image", image);
-    }
-    formData.append("title", values.title);
-    formData.append("description", values.description);
-    formData.append("summary", values.summary);
-    formData.append("source", values.source);
+ const handleSubmit = async (values) => {
+   const formData = new FormData();
+   if (image) {
+     formData.append("image", image);
+   }
+   formData.append("title", values.title);
+   formData.append("description", values.description);
+   formData.append("summary", values.summary);
+   formData.append("source", values.source);
 
-    console.log("🟢 Sending Update Request:", {
-      id: editingBlog._id,
-      formData: Object.fromEntries(formData), 
-    });
+   try {
+     if (editingBlog) {
+       const response = await editBlog({
+         id: editingBlog._id,
+         formData,
+       }).unwrap();
+       if (response?.success) {
+         message.success("Blog has been updated.", 1); 
+       } else {
+         message.error("Update failed.", 1);
+       }
+     } else {
+       const response = await addNewBlog(formData).unwrap();
 
-    try {
-      if (editingBlog) {
-        const response = await editBlog({
-          id: editingBlog._id,
-          formData,
-        }).unwrap();
-        if (response?.success) {
-          Swal.fire("Updated!", "Blog has been updated.", "success");
-        } else {
-          Swal.fire("Error!", "Update failed.", "error");
-        }
-      } else {
-        const response = await addNewBlog(formData).unwrap();
+       if (response?.success) {
+         message.success("New blog added successfully.", 1);
+       } else {
+         message.error("Add failed.", 1);
+       }
+     }
 
-        if (response?.success) {
-          Swal.fire("Added!", "New blog added successfully.", "success");
-        } else {
-          Swal.fire("Error!", "Add failed.", "error");
-        }
-      }
-      closeModal();
-    } catch (error) {
-      console.error("🔴 API Error:", error);
-      Swal.fire("Error!", "Something went wrong.", "error");
-    }
-  };
+     // Wait for the success message to be displayed
+     setTimeout(() => {
+       closeModal(); 
+     }, 1000);
+   } catch (error) {
+     console.error("🔴 API Error:", error);
+     message.error("Something went wrong.", 2);
+   }
+ };
+
 
   const handleDelete = (id) => {
     Swal.fire({

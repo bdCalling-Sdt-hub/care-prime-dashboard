@@ -2,15 +2,26 @@ import { api } from "../api/baseApi";
 
 const symptomSlice = api.injectEndpoints({
   endpoints: (builder) => ({
-    updateSymptomCategory: builder.query({
-      query: ({ id, category }) => ({
+    // GET Request: Fetch Symptom Category
+    getIdSymptomCategory: builder.query({
+      query: (id) => ({
         url: `/symptom/${id}`,
         method: "GET",
-        body: category,
       }),
-      invalidatesTags: ["category"],
+      providesTags: ["category"],
+    }),
+
+    // POST Request: Add New Symptom Category
+    addSymptomCategory: builder.mutation({
+      query: (newCategory) => ({
+        url: "/symptom",
+        method: "POST",
+        body: newCategory,
+      }),
+      invalidatesTags: ["category"], 
     }),
   }),
 });
 
-export const {useUpdateSymptomCategoryQuery}=symptomSlice;
+export const { useGetIdSymptomCategoryQuery, useAddSymptomCategoryMutation } =
+  symptomSlice;
