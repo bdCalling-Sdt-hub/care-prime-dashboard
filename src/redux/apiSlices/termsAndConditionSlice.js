@@ -4,11 +4,11 @@ import { api } from "../api/baseApi";
 const termsAndConditionSlice = api.injectEndpoints({
     endpoints: (builder)=>({
         updateTermsAndConditions: builder.mutation({
-            query: ({id, description})=> {
+            query: ( content)=> {
                 return {
-                  url: `/rule/terms-and-conditions/${id}`,
-                  method: "PATCH",
-                  body: { description },
+                  url: `/rule/terms-and-conditions`,
+                  method: "POST",
+                  body:  content ,
                 };
             }
         }),

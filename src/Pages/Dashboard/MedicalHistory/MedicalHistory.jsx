@@ -152,9 +152,21 @@ const MedicalHistory = () => {
       ),
     },
     {
-      title: "Name",
+      title: "Category Name",
       dataIndex: "name",
       key: "name",
+    },
+    {
+      title: "Details",
+      key: "action",
+      render: (_, record) => (
+        <div className="flex gap-2">
+          <Button
+            
+            onClick={() => handleOpenModal(record)}
+          >Details</Button>
+        </div>
+      ),
     },
     {
       title: "Action",

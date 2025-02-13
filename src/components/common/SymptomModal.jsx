@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Input, Button, Form, message } from "antd";
 import JoditEditor from "jodit-react";
 import { useAddSymptomCategoryMutation, useGetIdSymptomCategoryQuery, } from "../../redux/apiSlices/symptomSlice";
@@ -12,6 +12,7 @@ const SymptomModal = () => {
 
   const { data: symptomData, isLoading } = useGetIdSymptomCategoryQuery(id);  
   const allSymptomData = symptomData?.data
+  const navigate=useNavigate()
 
   useEffect(() => {
     form.setFieldsValue({
@@ -35,8 +36,9 @@ const SymptomModal = () => {
     }  
 
     await addSymptomCategory(data).then((res)=>{
-     if(res.success){
+     if(res){
       message.success("Operation successfully done")
+      navigate("/category")
      } else{
       message.error("Operation field")
      }
@@ -93,10 +95,7 @@ const SymptomModal = () => {
                         ]}
                       >
                         <JoditEditor
-                          config={{
-                            height: "330px",
-                            
-                          }}
+                        
                           value={
                             form.getFieldValue([
                               "contentArray",
