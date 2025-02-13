@@ -15,6 +15,7 @@ import {
 } from "../../../redux/apiSlices/medicalHistorySlice";
 import Swal from "sweetalert2";
 import { imageUrl } from "../../../redux/api/baseApi";
+import MedicationQuestion from "../../../components/common/MedicationQuestion";
 
 const MedicalHistory = () => {
   // API Queries & Mutations
@@ -22,13 +23,19 @@ const MedicalHistory = () => {
   const [addMedicalHistory] = useAddMedicalHistoryMutation();
   const [updateMedicalHistory] = useUpdateMedicalHistoryMutation();
   const [deleteMedicalHistory] = useDeleteMedicalHistoryMutation();
-
+console.log(data)
   // Modal Control & State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingHistory, setEditingHistory] = useState(null);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [form] = Form.useForm();
+   const [isModalOpenQuestion, setIsModalOpenQuestion] = useState(false);
+   const [id,setId]=useState()
+
+   const handleSubmitQuestion = (data) => {
+     console.log("Submitted Data:", data);
+   };
   console.log(data);
 
   // Open Modal for Add/Edit
@@ -160,11 +167,13 @@ const MedicalHistory = () => {
       title: "Details",
       key: "action",
       render: (_, record) => (
-        <div className="flex gap-2">
-          <Button
-            
-            onClick={() => handleOpenModal(record)}
-          >Details</Button>
+        <div>
+          <Button type="primary" onClick={() => {
+          setId(record._id)
+            setIsModalOpenQuestion(true);
+          }}>
+            {record.question ? "Edit question" : "Add question"}
+          </Button>
         </div>
       ),
     },
@@ -252,6 +261,13 @@ const MedicalHistory = () => {
           </div>
         </Form>
       </Modal>
+
+      <MedicationQuestion
+        visible={isModalOpenQuestion}
+        onCancel={() => setIsModalOpenQuestion(false)}
+        onSubmit={handleSubmitQuestion}
+        id={id}
+      />
     </div>
   );
 };
