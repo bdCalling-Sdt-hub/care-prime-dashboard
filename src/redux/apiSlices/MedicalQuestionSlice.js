@@ -25,7 +25,7 @@ const questionSlice = api.injectEndpoints({
     updateQuestion: builder.mutation({
       query: ({ id, updatedQuestion }) => ({
         url: `/question/${id}`,
-        method: "PUT",
+        method: "PATCH",
         body: updatedQuestion,
       }),
       invalidatesTags: ["question"], // Invalidate the "question" tag to refetch data

@@ -1,37 +1,64 @@
 import { useState, useEffect } from "react";
-import { Modal, Button, Select, Input, Form } from "antd";
-import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
-import { useGetIdQuestionQuery } from "../../redux/apiSlices/MedicalQuestionSlice";
+import { Modal, Button, Select, Input, Form, message } from "antd";
+import { PlusOutlined, MinusCircleOutlined, DeleteOutlined } from "@ant-design/icons";
+import { useAddQuestionMutation, useGetIdQuestionQuery } from "../../redux/apiSlices/MedicalQuestionSlice";
 
 export default function MedicationQuestion({
   visible,
   onCancel,
   onSubmit,
-  editData = null,
-  id
+  id,
 }) {
-  const [type, setType] = useState("INPUT");
-  const [questions, setQuestions] = useState([""]);
+  const [questions, setQuestions] = useState();
   const [editingId, setEditingId] = useState(null);
-  const { data } = useGetIdQuestionQuery()
-  console.log(data)
-  console.log("id", id)
+  const { data: question } = useGetIdQuestionQuery(id);
+  const [addQuestion] = useAddQuestionMutation()
+  const [subId,SetSubId]=useState(null)
+  const [form] = Form.useForm();
+  // console.log(editingId)
 
-  // When the modal opens in edit mode, set initial values
+  const allQuestion = question?.data;
+  console.log(question); 
+  // console.log(allQuestion[0].question)
+
   useEffect(() => {
-    if (visible && editData) {
-      setEditingId(editData.id); // Set the id for editing
-      setType(editData.type || "INPUT"); // Set the type
-      setQuestions(editData.questions || [""]); // Set the questions
-    } else {
-      setEditingId(null); // Reset the id when it's in add mode
-      setType("INPUT");
-      setQuestions([""]);
+    if (id) {
+      setEditingId(id);
     }
-  }, [visible, editData]);
+  }, [id]);
+  
+  useEffect(() => {
+    if (allQuestion) {
+      form.setFieldsValue({
+        type: allQuestion?.type,
+        question: allQuestion?.question,
+      });
+
+      setQuestions(allQuestion);
+    }
+  }, [allQuestion, form]);
+
+const handleSubmit = async () => {
+  const data = {
+    medication: editingId,
+    questions: questions,
+  };
+
+  console.log("Sending Payload:", data);
+
+  try {
+    const response = await addQuestion(data).unwrap();
+    message.success("Operation successfully done");
+    onCancel();
+  } catch (error) {
+    message.error("Operation failed");
+    console.error("Error:", error);
+  }
+};
+
 
   const handleAddQuestion = () => {
-    setQuestions([...questions, ""]);
+    setQuestions([...questions, { type: "INPUT", question: "" }]);
   };
 
   const handleRemoveQuestion = (index) => {
@@ -39,17 +66,21 @@ export default function MedicationQuestion({
     setQuestions(updatedQuestions);
   };
 
-  const handleQuestionChange = (index, value) => {
+ const handleQuestionChange = (index, value) => {
+   const updatedQuestions = [...questions]; 
+   updatedQuestions[index] = { ...updatedQuestions[index], question: value }; 
+   setQuestions(updatedQuestions);
+ };
+
+
+  const handleTypeChange = (index, value) => {
     const updatedQuestions = [...questions];
-    updatedQuestions[index] = value;
+    updatedQuestions[index] = { ...updatedQuestions[index], type: value };
     setQuestions(updatedQuestions);
   };
 
-  const handleSubmit = () => {
-    const data = { id: editingId, type, questions }; // Include the id if it's an edit
-    onSubmit(data);
-    onCancel();
-  };
+
+
 
   return (
     <Modal
@@ -60,39 +91,55 @@ export default function MedicationQuestion({
       okText="Submit"
     >
       <Form layout="vertical">
-        <Form.Item label="Type">
-          <Select value={type} onChange={setType}>
-            <Select.Option value="INPUT">INPUT</Select.Option>
-            <Select.Option value="TEXTAREA">TEXTAREA</Select.Option>
-          </Select>
-        </Form.Item>
+        {questions?.map((item, index) => (
+          <div
+            key={index}
+            className="mb-4 p-3 border border-gray-300 rounded-lg"
+          >
+            <Select
+              value={item.type}
+              onChange={(value) => handleTypeChange(index, value)}
+              className="w-full mb-2"
+            >
+              <Select.Option value="INPUT">INPUT</Select.Option>
+              <Select.Option value="TEXTAREA">TEXTAREA</Select.Option>
+            </Select>
 
-        <Form.Item label="Questions">
-          {questions.map((question, index) => (
-            <div key={index} className="flex gap-2 mb-2">
-              <Input
-                value={question}
+            {item.type === "TEXTAREA" ? (
+              <Input.TextArea
+                value={item.question}
                 onChange={(e) => handleQuestionChange(index, e.target.value)}
-                placeholder={`Question ${index + 1}`}
+                placeholder={`Enter question ${index + 1}`}
+                rows={3}
               />
+            ) : (
+              <Input
+                value={item.question}
+                onChange={(e) => handleQuestionChange(index, e.target.value)}
+                placeholder={`Enter question ${index + 1}`}
+              />
+            )}
+
+            <div className="mt-2 flex justify-end">
               <Button
                 type="text"
-                icon={<MinusCircleOutlined />}
+                icon={item._id ? <DeleteOutlined /> : <MinusCircleOutlined />}
                 danger
-                onClick={() => handleRemoveQuestion(index)}
+                onClick={() => handleRemoveQuestion(item.index)}
                 disabled={questions.length === 1}
               />
             </div>
-          ))}
-          <Button
-            type="dashed"
-            onClick={handleAddQuestion}
-            icon={<PlusOutlined />}
-            block
-          >
-            Add More
-          </Button>
-        </Form.Item>
+          </div>
+        ))}
+
+        <Button
+          type="dashed"
+          onClick={handleAddQuestion}
+          icon={<PlusOutlined />}
+          block
+        >
+          Add More
+        </Button>
       </Form>
     </Modal>
   );

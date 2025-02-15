@@ -38,7 +38,6 @@ const InsightfulTips = () => {
     if (tip) {
       form.setFieldsValue({ name: tip.name });
 
-      // Image preview সেট করা
       const imageSrc = tip?.image?.startsWith("https")
         ? tip.image
         : `${imageUrl}/${tip.image}`;
@@ -103,33 +102,40 @@ const InsightfulTips = () => {
     }
   };
 
-  // Handle Delete
-  const handleDelete = async (id) => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this tip!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#023F86",
-      confirmButtonText: "Yes, delete it!",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          // Delete the Insight Tip
-          await deleteInsightTip(id);
-          Swal.fire("Deleted!", "The insight tip has been deleted.", "success");
+  // Handle Deleteconst handleDelete = async (id) => {
+const handleDelete = async (id) => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Once deleted, you will not be able to recover this tip!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#023F86",
+    confirmButtonText: "Yes, delete it!",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      try {
+        await deleteInsightTip(id);
+        Swal.fire({
+          title: "Deleted!",
+          text: "The insight tip has been deleted.",
+          icon: "success",
+          showConfirmButton: false, 
+          timer: 1500, 
+        });
 
-          // Close the modal after 1 second
-          setTimeout(() => {
-            handleCloseModal();
-          }, 1000);
-        } catch (error) {
-          Swal.fire("Error!", "Failed to delete the insight tip.", "error");
-        }
+        
+        setTimeout(() => {
+          handleCloseModal();
+        }, 1000);
+      } catch (error) {
+        Swal.fire("Error!", "Failed to delete the insight tip.", "error");
       }
-    });
-  };
+    }
+  });
+};
+
+
 
   // Table Columns
   const columns = [

@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Table, Button, Modal, Form, Input, Upload, Avatar, message } from "antd";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Input,
+  Upload,
+  Avatar,
+  message,
+} from "antd";
 import {
   PlusOutlined,
   EditOutlined,
@@ -23,19 +32,19 @@ const MedicalHistory = () => {
   const [addMedicalHistory] = useAddMedicalHistoryMutation();
   const [updateMedicalHistory] = useUpdateMedicalHistoryMutation();
   const [deleteMedicalHistory] = useDeleteMedicalHistoryMutation();
-console.log(data)
+  console.log(data);
   // Modal Control & State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingHistory, setEditingHistory] = useState(null);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [form] = Form.useForm();
-   const [isModalOpenQuestion, setIsModalOpenQuestion] = useState(false);
-   const [id,setId]=useState()
+  const [isModalOpenQuestion, setIsModalOpenQuestion] = useState(false);
+  const [id, setId] = useState();
 
-   const handleSubmitQuestion = (data) => {
-     console.log("Submitted Data:", data);
-   };
+  const handleSubmitQuestion = (data) => {
+    console.log("Submitted Data:", data);
+  };
   console.log(data);
 
   // Open Modal for Add/Edit
@@ -81,29 +90,29 @@ console.log(data)
 
   // Handle Add/Edit Submit
   const handleSubmit = async (values) => {
-   try {
-     const formData = new FormData();
-     formData.append("name", values.name);
-     formData.append("image", image);
+    try {
+      const formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("image", image);
 
-     if (editingHistory) {
-       const res = await updateMedicalHistory({
-         id: editingHistory._id,
-         updateHistory: formData,
-       });
-       if (res) {
-         message.success("Medecal history succefully updated");
-       }
-     } else {
-       const res = await addMedicalHistory(formData);
-       message.success("Medical history succefully add");
-       console.log(res)
-     }
-     handleCloseModal();
-   } catch (error) {
-     message.error("Operation failed");
-     console.error("Error:", error);
-   }
+      if (editingHistory) {
+        const res = await updateMedicalHistory({
+          id: editingHistory._id,
+          updateHistory: formData,
+        });
+        if (res) {
+          message.success("Medecal history succefully updated");
+        }
+      } else {
+        const res = await addMedicalHistory(formData);
+        message.success("Medical history succefully add");
+        console.log(res);
+      }
+      handleCloseModal();
+    } catch (error) {
+      message.error("Operation failed");
+      console.error("Error:", error);
+    }
   };
 
   // Handle Delete
@@ -125,11 +134,9 @@ console.log(data)
 
           // Show success message
           Swal.fire("Deleted!", "The insight tip has been deleted.", "success");
-
+          timer: 1500;
           // Close the modal after 1 second
-          setTimeout(() => {
-            handleCloseModal();
-          }, 1000); // 1 second delay
+          
         } catch (error) {
           // Show error message in case of failure
           Swal.fire("Error!", "Failed to delete the insight tip.", "error");
@@ -168,10 +175,14 @@ console.log(data)
       key: "action",
       render: (_, record) => (
         <div>
-          <Button type="primary" onClick={() => {
-          setId(record._id)
-            setIsModalOpenQuestion(true);
-          }}>
+          <Button
+            type="primary"
+            className="bg-[#023F86]"
+            onClick={() => {
+              setId(record._id);
+              setIsModalOpenQuestion(true);
+            }}
+          >
             {record.question ? "Edit question" : "Add question"}
           </Button>
         </div>

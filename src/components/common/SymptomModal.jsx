@@ -34,7 +34,7 @@ const SymptomModal = () => {
       category:id , 
       ...values
     }  
-
+console.log(data)
     await addSymptomCategory(data).then((res)=>{
      if(res){
       message.success("Operation successfully done")
