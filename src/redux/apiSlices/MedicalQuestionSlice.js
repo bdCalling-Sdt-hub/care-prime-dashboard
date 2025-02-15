@@ -23,8 +23,8 @@ const questionSlice = api.injectEndpoints({
 
     // PUT Request: Update an existing Question
     updateQuestion: builder.mutation({
-      query: ({ id, updatedQuestion }) => ({
-        url: `/question/${id}`,
+      query: ( updatedQuestion ) => ({
+        url: `/question`,
         method: "PATCH",
         body: updatedQuestion,
       }),
