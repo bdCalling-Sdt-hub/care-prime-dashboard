@@ -181,7 +181,7 @@ console.log(get)
       key: "image",
       render: (text) => (
         <Avatar
-          className="w-20 h-16 rounded-md object-cover bg-[#023F86]"
+          className="w-20 h-16  rounded-md object-cover bg-[#023F86]"
           src={text?.startsWith("http") ? text : `${imageUrl}/${text}`}
           icon={<UserOutlined />}
         />

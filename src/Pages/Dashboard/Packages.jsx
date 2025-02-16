@@ -148,7 +148,7 @@ const PackagesPlans = () => {
             >
               <p className="mb-2">
                 <span>Price:</span>{" "}
-                <strong className="text-green-600 font-semibold text-2xl">
+                <strong className="text-[#023F86] font-semibold text-2xl">
                   ${pkg.price}
                 </strong>
               </p>

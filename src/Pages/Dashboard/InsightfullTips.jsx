@@ -151,7 +151,7 @@ const handleDelete = async (id) => {
       key: "image",
       render: (text) => (
         <Avatar
-          className="w-20 h-16 rounded-md object-cover"
+          className="w-28 h-20 rounded-xl object-cover"
           src={text?.startsWith("http") ? text : `${imageUrl}/${text}`}
           icon={<UserOutlined />}
         />
@@ -160,6 +160,7 @@ const handleDelete = async (id) => {
     {
       title: "Name",
       dataIndex: "name",
+      width: 800,
       key: "name",
     },
     {
@@ -192,7 +193,7 @@ const handleDelete = async (id) => {
           className="bg-[#023F86]"
           onClick={() => handleOpenModal()}
         >
-          + Add InsightTip
+           Add InsightTip
         </Button>
       </div>
 

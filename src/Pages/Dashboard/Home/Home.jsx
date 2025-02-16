@@ -86,8 +86,8 @@ const Home = () => {
       </div>
 
       {/*Line Chart Section */}
-      <div className="w-full p-4 bg-white rounded mt-4 relative ">
-        <h2 className="text-lg font-medium mb-2 py-2">User Engagement</h2>
+      <div className="w-full py-4 bg-white rounded mt-4 relative ">
+        <h2 className="text-lg font-medium mb-2 py-2 ml-10">User Engagement</h2>
         <div className="flex items-center justify-end gap-4 absolute top-7 right-5">
         </div>
         <LineCharts users={summary?.data?.users} />

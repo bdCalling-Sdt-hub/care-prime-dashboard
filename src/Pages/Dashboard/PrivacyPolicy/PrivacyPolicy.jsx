@@ -1,70 +1,57 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Button, Spin, message } from "antd";
 import JoditEditor from "jodit-react";
-import { usePrivacyPolicyQuery, useUpdatePrivacyPolicyMutation } from "../../../redux/apiSlices/privacypolicy";
+import {
+  usePrivacyPolicyQuery,
+  useUpdatePrivacyPolicyMutation,
+} from "../../../redux/apiSlices/privacypolicy";
 
-export default function PrivacyPolicy() {
-  const { data, isLoading, refetch } = usePrivacyPolicyQuery();
-  const [updatePrivacyPolicy] = useUpdatePrivacyPolicyMutation();
-  const [isEditing, setIsEditing] = useState(false);
+export default function TermsAndConditions() {
+   const { data, isLoading, refetch } = usePrivacyPolicyQuery();
+   const [updatePrivacyPolicy] = useUpdatePrivacyPolicyMutation();
+  const editor = useRef(null);
   const [content, setContent] = useState("");
-  
 
-  // console.log(content)
-  // console.log(data)
-
-  if (isLoading) {
-    return <Spin size="large" className="flex justify-center mt-10" />;
-  }
-
-  const stripHtml = (html) => {
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    return doc.body.textContent || "";
-  };
-
-  const handleEdit = () => {
-    setIsEditing(true);
-    setContent(data?.content || "");
-  };
-
+  useEffect(() => {
+    if (data?.content) {
+      setContent(data.content);
+    }
+  }, [data?.content]);
+ 
+  // Save handler
   const handleSave = async () => {
-    // console.log("saaalgdflhksdfgas", content)
     try {
       const res = await updatePrivacyPolicy({ content }).unwrap();
-      // console.log(res)
-      refetch();
       if (res.success) {
         message.success("Updated successfully!");
-        setIsEditing(false);
+        refetch(); // Refresh data after update
+        setContent(content); // Ensure local state is in sync
       }
     } catch (error) {
       message.error("Update failed!");
     }
   };
 
+  // Show loading state
+  if (isLoading) {
+    return <Spin size="large" className="flex justify-center mt-10" />;
+  }
+
   return (
-    <div className=" mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold mb-4">Privacy policy</h2>
-      {isEditing ? (
-        <JoditEditor
-          value={content}
-          onChange={(newContent) => setContent(newContent)}
-        />
-      ) : (
-        <div className="prose">
-          {stripHtml(data?.content || "No Terms Available")}
-        </div>
-      )}
+    <div className="mx-auto p-6 bg-white shadow-md rounded-lg">
+      <h2 className="text-2xl font-bold mb-4">Terms & Conditions</h2>
+
+      {/* Jodit Editor */}
+      <JoditEditor
+        ref={editor}
+        value={content}
+        onChange={(newContent) => setContent(newContent)}
+      />
+
       <div className="mt-4 flex gap-2">
-        {isEditing ? (
-          <Button type="primary" onClick={handleSave}>
-            Save
-          </Button>
-        ) : (
-          <Button type="default" onClick={handleEdit}>
-            Edit
-          </Button>
-        )}
+        <Button type="primary" onClick={handleSave}>
+          Save
+        </Button>
       </div>
     </div>
   );

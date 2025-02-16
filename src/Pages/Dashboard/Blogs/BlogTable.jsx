@@ -14,6 +14,7 @@ import {
   DeleteOutlined,
   UploadOutlined,
   UserOutlined,
+  PlusOutlined,
 } from "@ant-design/icons";
 import Swal from "sweetalert2";
 import {
@@ -210,10 +211,11 @@ const BlogTable = () => {
         <p className="text-xl font-semibold">All Blogs</p>
         <Button
           type="primary"
+          icon={<PlusOutlined />}
           className="mb-4 bg-[#023F86]"
           onClick={() => openModal()}
         >
-          + Add New Blog
+          Add New Blog
         </Button>
       </div>
       <Table

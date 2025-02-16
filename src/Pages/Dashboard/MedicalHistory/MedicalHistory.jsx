@@ -219,7 +219,7 @@ const MedicalHistory = () => {
           className="bg-[#023F86]"
           onClick={() => handleOpenModal()}
         >
-          + Add Medical History
+          Add Medical History
         </Button>
       </div>
 

@@ -29,12 +29,12 @@ export default function BarCharts({ visitors }) {
   // console.log(visitors)
   
   return (
-    <div className="w-full h-[270px] bg-white p-4 rounded-md ">
-      <h2 className="text-lg font-medium mb-2">Site Visitors</h2>
+    <div className="w-full h-[270px] bg-white py-4 rounded-md ">
+      <h2 className="text-lg font-medium mb-2 ml-10">Site Visitors</h2>
       <ResponsiveContainer width="100%" height={220}>
         <BarChart
           data={visitors}
-          margin={{ top: 5, right: 20, left: 15, bottom: 5 }}
+          margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
           width={10}
           height={80}
         >

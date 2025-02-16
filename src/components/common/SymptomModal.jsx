@@ -50,13 +50,18 @@ console.log(data)
 
   return (
     <div>
-      <h2>Symptom Details</h2>
+      <h2 className="font-semibold text-xl">Symptom Details</h2>
       {isLoading ? (
         <div>Loading...</div>
       ) : (
         <Form form={form} onFinish={onFinish} initialValues={data}>
           {/* Optional Tips Input */}
-          <Form.Item label="Tips (Optional)" name="tips">
+          <Form.Item
+            label="Tips (Optional)"
+            name="tips"
+            labelCol={{ span: 24 }}
+            wrapperCol={{ span: 24 }}
+          >
             <Input.TextArea
               rows={5}
               defaultValue={data ? data.tips : ""}
@@ -94,7 +99,7 @@ console.log(data)
                           { required: true, message: "Content is required" },
                         ]}
                       >
-                        <JoditEditor
+                         <JoditEditor
                           value={
                             form.getFieldValue(["contents", name, "content"]) ||
                             ""
@@ -111,10 +116,17 @@ console.log(data)
                             });
                           }}
                           config={{
+                            enablePaste: true, 
+                            allowPasteFromWord: true, 
+                            defaultActionOnPaste: "insert_clear_html", 
+                            cleanHTML: {
+                              fillEmptyParagraph: false, // Prevents auto-filling empty paragraphs
+                              removeEmptyNodes: true, // Removes unnecessary empty tags
+                            },
                             style: {
-                              padding: "20px", 
-                            }
-                          }} 
+                              padding: "20px",
+                            },
+                          }}
                         />
                       </Form.Item>
                       <Button type="link" onClick={() => remove(name)}>
