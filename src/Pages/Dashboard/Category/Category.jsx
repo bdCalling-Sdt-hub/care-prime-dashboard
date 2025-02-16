@@ -146,13 +146,24 @@ console.log(get)
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        try {
-          await deleteCategory(id);
-          Swal.fire("Deleted!", "The category has been deleted.", "success");
-        } catch (error) {
-          Swal.fire("Error!", "Failed to delete the category.", "error");
-        }
-      }
+           try {
+             await deleteCategory(id);
+             Swal.fire({
+               title: "Deleted!",
+               text: "The insight tip has been deleted.",
+               icon: "success",
+               showConfirmButton: false, 
+               timer: 1500, 
+             });
+     
+             
+             setTimeout(() => {
+               handleCloseModal();
+             }, 1000);
+           } catch (error) {
+             Swal.fire("Error!", "Failed to delete the insight tip.", "error");
+           }
+         }
     });
   };
 

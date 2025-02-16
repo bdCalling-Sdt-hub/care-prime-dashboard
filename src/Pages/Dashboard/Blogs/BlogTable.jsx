@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Table, Button, Modal, Form, Input, Upload, Avatar, message } from "antd";
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Input,
+  Upload,
+  Avatar,
+  message,
+} from "antd";
 import {
   EditOutlined,
   DeleteOutlined,
@@ -27,8 +36,6 @@ const BlogTable = () => {
   const [editingBlog, setEditingBlog] = useState(null);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-
- 
 
   const openModal = (blog = null) => {
     setEditingBlog(blog);
@@ -70,47 +77,46 @@ const BlogTable = () => {
     reader.readAsDataURL(file);
   };
 
- const handleSubmit = async (values) => {
-   const formData = new FormData();
-   if (image) {
-     formData.append("image", image);
-   }
-   formData.append("title", values.title);
-   formData.append("description", values.description);
-   formData.append("summary", values.summary);
-   formData.append("source", values.source);
+  const handleSubmit = async (values) => {
+    const formData = new FormData();
+    if (image) {
+      formData.append("image", image);
+    }
+    formData.append("title", values.title);
+    formData.append("description", values.description);
+    formData.append("summary", values.summary);
+    formData.append("source", values.source);
 
-   try {
-     if (editingBlog) {
-       const response = await editBlog({
-         id: editingBlog._id,
-         formData,
-       }).unwrap();
-       if (response?.success) {
-         message.success("Blog has been updated.", 1); 
-       } else {
-         message.error("Update failed.", 1);
-       }
-     } else {
-       const response = await addNewBlog(formData).unwrap();
+    try {
+      if (editingBlog) {
+        const response = await editBlog({
+          id: editingBlog._id,
+          formData,
+        }).unwrap();
+        if (response?.success) {
+          message.success("Blog has been updated.", 1);
+        } else {
+          message.error("Update failed.", 1);
+        }
+      } else {
+        const response = await addNewBlog(formData).unwrap();
 
-       if (response?.success) {
-         message.success("New blog added successfully.", 1);
-       } else {
-         message.error("Add failed.", 1);
-       }
-     }
+        if (response?.success) {
+          message.success("New blog added successfully.", 1);
+        } else {
+          message.error("Add failed.", 1);
+        }
+      }
 
-     // Wait for the success message to be displayed
-     setTimeout(() => {
-       closeModal(); 
-     }, 1000);
-   } catch (error) {
-     console.error("🔴 API Error:", error);
-     message.error("Something went wrong.", 2);
-   }
- };
-
+      // Wait for the success message to be displayed
+      setTimeout(() => {
+        closeModal();
+      }, 1000);
+    } catch (error) {
+      console.error("🔴 API Error:", error);
+      message.error("Something went wrong.", 2);
+    }
+  };
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -124,10 +130,18 @@ const BlogTable = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await deleteBlog(id).unwrap();
-          Swal.fire("Deleted!", "Blog has been deleted.", "success");
+          await deleteBlog(id);
+          Swal.fire({
+            title: "Deleted!",
+            text: "The insight tip has been deleted.",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+
+          setTimeout(() => {}, 1000);
         } catch (error) {
-          Swal.fire("Error!", "Failed to delete blog.", "error");
+          Swal.fire("Error!", "Failed to delete the insight tip.", "error");
         }
       }
     });
@@ -225,15 +239,7 @@ const BlogTable = () => {
             <Input placeholder="Enter blog title" />
           </Form.Item>
 
-          {/* Description */}
-          <Form.Item
-            name="description"
-            label="Description"
-            rules={[{ required: true, message: "Please enter a description" }]}
-          >
-            <Input.TextArea rows={3} placeholder="Enter blog description" />
-          </Form.Item>
-
+          {/* summary  */}
           <Form.Item
             name="summary"
             label="Summary"
@@ -252,10 +258,19 @@ const BlogTable = () => {
             ]}
           >
             <Input.TextArea
-              rows={3}
+              rows={2}
               placeholder="Enter summary"
               maxLength={150}
             />
+          </Form.Item>
+
+          {/* Description */}
+          <Form.Item
+            name="description"
+            label="Description"
+            rules={[{ required: true, message: "Please enter a description" }]}
+          >
+            <Input.TextArea rows={4} placeholder="Enter blog description" />
           </Form.Item>
 
           {/* Source */}

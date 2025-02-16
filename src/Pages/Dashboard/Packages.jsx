@@ -58,22 +58,24 @@ const PackagesPlans = () => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        try {
-          // Delete the Insight Tip
-          await deletePackage(id);
-
-          // Show success message
-          Swal.fire("Deleted!", "The insight tip has been deleted.", "success");
-
-          // Close the modal after 1 second
-          setTimeout(() => {
-            handleCancel();
-          }, 1000); // 1 second delay
-        } catch (error) {
-          // Show error message in case of failure
-          Swal.fire("Error!", "Failed to delete the insight tip.", "error");
-        }
-      }
+           try {
+             await deletePackage(id);
+             Swal.fire({
+               title: "Deleted!",
+               text: "The insight tip has been deleted.",
+               icon: "success",
+               showConfirmButton: false, 
+               timer: 1500, 
+             });
+     
+             
+             setTimeout(() => {
+               handleCloseModal();
+             }, 1000);
+           } catch (error) {
+             Swal.fire("Error!", "Failed to delete the insight tip.", "error");
+           }
+         }
     });
   };
 

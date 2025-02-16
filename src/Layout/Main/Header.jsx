@@ -30,7 +30,7 @@ const Header = () => {
                     }}
                     src={src}
                     alt="person-male--v2"
-                    className='clip'
+                    className='clip object-cover'
                 />
                 <p>{user?.firstName} {" "} {user?.lastName}</p>
             </Link>

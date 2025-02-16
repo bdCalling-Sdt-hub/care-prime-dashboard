@@ -128,20 +128,21 @@ const MedicalHistory = () => {
       confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        try {
-          // Delete the Insight Tip
-          await deleteMedicalHistory(id);
-
-          // Show success message
-          Swal.fire("Deleted!", "The insight tip has been deleted.", "success");
-          timer: 1500;
-          // Close the modal after 1 second
-          
-        } catch (error) {
-          // Show error message in case of failure
-          Swal.fire("Error!", "Failed to delete the insight tip.", "error");
-        }
-      }
+            try {
+              await deleteMedicalHistory(id);
+              Swal.fire({
+                title: "Deleted!",
+                text: "The insight tip has been deleted.",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+    
+              setTimeout(() => {}, 1000);
+            } catch (error) {
+              Swal.fire("Error!", "Failed to delete the insight tip.", "error");
+            }
+          }
     });
   };
 

@@ -33,7 +33,7 @@ export default function MedicationQuestion({
   // console.log(editingId)
 
   const allQuestion = question?.data;
-  console.log(question);
+  console.log(allQuestion);
   // console.log(allQuestion[0].question)
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export default function MedicationQuestion({
       setEditingId(id);
     }
   }, [id]);
-
+console.log(editingId?.data)
   useEffect(() => {
     if (allQuestion) {
       form.setFieldsValue({
@@ -54,29 +54,44 @@ export default function MedicationQuestion({
   }, [allQuestion, form]);
 
 const handleSubmit = async () => {
+  const formattedQuestions = questions.map((q) => {
+    if (q._id) {
+      return { _id: q._id, type: q.type, question: q.question };
+    } else {
+      return { medication: editingId, type: q.type, question: q.question };
+    }
+  });
+
   const data = {
+    questions: formattedQuestions,
+  }; 
+
+  const addData = {
     medication: editingId,
     questions: questions,
   };
 
-  console.log("Sending Payload:", data);
+  // console.log("Sending :", data); 
 
   try {
-    if (editingId) {
-      if (questions) {
-       const response = await updateQuestion(data).unwrap();
-       message.success("All questions updated successfully");
-      } else {
-        const response = await addQuestion(data).unwrap();
-        message.success("Operation successfully done");
-        onCancel();
-      }
+    if (allQuestion && allQuestion.length > 0) {
+      const response = await updateQuestion(data).unwrap(); 
+     
+      message.success("All questions updated successfully");
+    } else { 
+      console.log("adddata", addData);
+      const response = await addQuestion(addData).unwrap(); 
+
+      console.log("res" ,response)
+      message.success("Add successfully done");
     }
+    onCancel();
   } catch (error) {
     message.error("Operation failed");
     console.error("Error:", error);
   }
 };
+
 
   const handleAddQuestion = () => {
     setQuestions([...questions, { type: "INPUT", question: "" }]);
@@ -147,40 +162,44 @@ const handleSubmit = async () => {
             key={index}
             className="mb-4 p-3 border border-gray-300 rounded-lg"
           >
-            <Select
-              value={item.type}
-              onChange={(value) => handleTypeChange(index, value)}
-              className="w-full mb-2"
-            >
-              <Select.Option value="INPUT">INPUT</Select.Option>
-              <Select.Option value="TEXTAREA">TEXTAREA</Select.Option>
-            </Select>
+            {/* Question Input with Label (Now on Top) */}
+            <div className="mb-2">
+              <label className="block text-[12px] mb-1">
+                Question {index + 1}
+              </label>
+              {item.type === "TEXTAREA" ? (
+                <Input.TextArea
+                  value={item.question}
+                  onChange={(e) => handleQuestionChange(index, e.target.value)}
+                  placeholder={`Enter question ${index + 1}`}
+                  rows={3}
+                />
+              ) : (
+                <Input
+                  value={item.question}
+                  onChange={(e) => handleQuestionChange(index, e.target.value)}
+                  placeholder={`Enter question ${index + 1}`}
+                />
+              )}
+            </div>
 
-            {item.type === "TEXTAREA" ? (
-              <Input.TextArea
-                value={item.question}
-                onChange={(e) => handleQuestionChange(index, e.target.value)}
-                placeholder={`Enter question ${index + 1}`}
-                rows={3}
-              />
-            ) : (
-              <Input
-                value={item.question}
-                onChange={(e) => handleQuestionChange(index, e.target.value)}
-                placeholder={`Enter question ${index + 1}`}
-              />
-            )}
+            {/* Type Select with Label (Now Below Question) */}
+            <div className="mb-2">
+              <label className="block text-[12px] mb-1">Type</label>
+              <Select
+                value={item.type}
+                onChange={(value) => handleTypeChange(index, value)}
+                className="w-full mb-2"
+              >
+                <Select.Option value="INPUT">INPUT</Select.Option>
+                <Select.Option value="TEXTAREA">TEXTAREA</Select.Option>
+              </Select>
+            </div>
 
+            {/* Action Buttons */}
             <div className="mt-2 flex justify-end">
               {item._id ? (
                 <div>
-                  {/* <Button
-                    type="text"
-                    icon={<EditOutlined />}
-                    danger
-                    onClick={() => handleDeleteQuestion(item._id)}
-                    disabled={!item._id}
-                  /> */}
                   <Button
                     type="text"
                     icon={<DeleteOutlined />}
@@ -194,7 +213,7 @@ const handleSubmit = async () => {
                   type="text"
                   icon={<MinusCircleOutlined />}
                   danger
-                  onClick={() => handleRemoveQuestion(item.index)}
+                  onClick={() => handleRemoveQuestion(index)}
                   disabled={questions.length === 1}
                 />
               )}
@@ -202,6 +221,7 @@ const handleSubmit = async () => {
           </div>
         ))}
 
+        {/* Add Question Button */}
         <Button
           type="dashed"
           onClick={handleAddQuestion}

@@ -15,6 +15,7 @@ import { TbBulbFilled } from "react-icons/tb";
 import { HiTicket } from "react-icons/hi2";
 import { IoNewspaper } from "react-icons/io5";
 import { IoBriefcase } from "react-icons/io5";
+import MainLogo from "../../assets/MainLogo.png"
 
 const Sidebar = () => {
   const location = useLocation();
@@ -188,10 +189,8 @@ const Sidebar = () => {
 
   return (
     <div className="h-full ">
-      <Link to={"/"} className=" flex items-center  justify-center py-4">
-        <p className="text-4xl font-semibold  font-sans tracking-wider text-white">
-          CarePrime
-        </p>
+      <Link to={"/"} className=" flex items-center  justify-center py-4 px-6">
+       <img src={MainLogo} alt="logo" />
       </Link>
 
       <Menu

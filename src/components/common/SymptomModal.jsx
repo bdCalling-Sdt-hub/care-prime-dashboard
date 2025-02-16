@@ -95,25 +95,26 @@ console.log(data)
                         ]}
                       >
                         <JoditEditor
-                        
                           value={
-                            form.getFieldValue([
-                              "contentArray",
-                              name,
-                              "content",
-                            ]) || ""
+                            form.getFieldValue(["contents", name, "content"]) ||
+                            ""
                           }
-                          onChange={(newContent) => {
-                            const currentValues =
-                              form.getFieldValue("contentArray") || [];
-                            currentValues[name] = {
-                              ...currentValues[name],
-                              content: newContent,
-                            };
+                          onBlur={(newContent) => {
                             form.setFieldsValue({
-                              contentArray: currentValues,
+                              contents: form
+                                .getFieldValue("contents")
+                                .map((item, index) =>
+                                  index === name
+                                    ? { ...item, content: newContent }
+                                    : item
+                                ),
                             });
                           }}
+                          config={{
+                            style: {
+                              padding: "20px", 
+                            }
+                          }} 
                         />
                       </Form.Item>
                       <Button type="link" onClick={() => remove(name)}>
