@@ -89,31 +89,37 @@ const MedicalHistory = () => {
   };
 
   // Handle Add/Edit Submit
-  const handleSubmit = async (values) => {
-    try {
-      const formData = new FormData();
-      formData.append("name", values.name);
-      formData.append("image", image);
+ const handleSubmit = async (values) => {
+   try {
+     const formData = new FormData();
+     formData.append("name", values.name);
 
-      if (editingHistory) {
-        const res = await updateMedicalHistory({
-          id: editingHistory._id,
-          updateHistory: formData,
-        });
-        if (res) {
-          message.success("Medecal history succefully updated");
-        }
-      } else {
-        const res = await addMedicalHistory(formData);
-        message.success("Medical history succefully add");
-        console.log(res);
-      }
-      handleCloseModal();
-    } catch (error) {
-      message.error("Operation failed");
-      console.error("Error:", error);
-    }
-  };
+     if (image) {
+       formData.append("image", image);
+     } else if (editingHistory?.image) {
+       formData.append("existingImage", editingHistory.image);
+     }
+
+     if (editingHistory) {
+       const res = await updateMedicalHistory({
+         id: editingHistory._id,
+         updateHistory: formData,
+       });
+       if (res) {
+         message.success("Medical history successfully updated");
+       }
+     } else {
+       const res = await addMedicalHistory(formData);
+       message.success("Medical history successfully added");
+       console.log(res);
+     }
+     handleCloseModal();
+   } catch (error) {
+     message.error("Operation failed");
+     console.error("Error:", error);
+   }
+ };
+
 
   // Handle Delete
   const handleDelete = async (id) => {

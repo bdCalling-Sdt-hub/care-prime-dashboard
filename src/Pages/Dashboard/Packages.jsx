@@ -10,7 +10,6 @@ import {
 import FeaturedInput from "../../components/common/PackegeFearuedInput";
 import Swal from "sweetalert2";
 
-const { Option } = Select;
 
 const PackagesPlans = () => {
   const { data, isLoading } = useGetAllPackagesQuery();
@@ -85,9 +84,9 @@ const PackagesPlans = () => {
       const formattedData = {
         title: values.title,
         description: values.description,
-        price: Number(values.price), // ✅ Price কে সংখ্যায় রূপান্তর
+        price: Number(values.price), 
         duration: values.duration,
-        features: values.features.filter((f) => f.trim() !== ""), // ✅ ফাঁকা ফিচার বাদ দেয়া
+        features: values.features.filter((f) => f.trim() !== ""), 
       };
 
       if (isEditing) {

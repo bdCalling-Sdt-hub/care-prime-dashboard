@@ -22,7 +22,7 @@ const Notifications = () => {
     return (
         <div>
             <div className='flex items-center justify-between mb-6'>
-                <h2 className='text-[22px]'>All Notifications</h2>
+                <h2 className='text-[22px]'>Notifications</h2>
                 <button className='bg-primary text-white h-10 px-4 rounded-md'>Read All</button>
             </div>
 

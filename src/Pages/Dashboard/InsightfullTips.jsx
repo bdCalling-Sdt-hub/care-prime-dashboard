@@ -22,8 +22,6 @@ const InsightfulTips = () => {
   const [addInsightTip] = useAddInsightTipMutation();
   const [editInsightTip] = useEditInsightTipMutation();
   const [deleteInsightTip] = useDeleteInsightTipMutation();
-
-  // Modal Control & State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTip, setEditingTip] = useState(null);
   const [image, setImage] = useState(null);
@@ -193,7 +191,7 @@ const handleDelete = async (id) => {
           className="bg-[#023F86]"
           onClick={() => handleOpenModal()}
         >
-           Add InsightTip
+          Add InsightTip
         </Button>
       </div>
 
@@ -218,7 +216,7 @@ const handleDelete = async (id) => {
             label="Name"
             rules={[{ required: true, message: "Please enter a name" }]}
           >
-            <Input placeholder="Enter name" />
+            <Input.TextArea placeholder="Enter name" rows={4}/>
           </Form.Item>
 
           {/* Image Upload & Preview */}

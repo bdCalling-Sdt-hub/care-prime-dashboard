@@ -99,7 +99,7 @@ console.log(data)
                           { required: true, message: "Content is required" },
                         ]}
                       >
-                         <JoditEditor
+                        <JoditEditor
                           value={
                             form.getFieldValue(["contents", name, "content"]) ||
                             ""
@@ -116,12 +116,37 @@ console.log(data)
                             });
                           }}
                           config={{
-                            enablePaste: true, 
-                            allowPasteFromWord: true, 
-                            defaultActionOnPaste: "insert_clear_html", 
+                            enablePaste: true,
+                            allowPasteFromWord: true,
+                            defaultActionOnPaste: "insert_as_html", // Keeps original formatting
+                            pastePlainText: false, // Ensures formatting is retained
                             cleanHTML: {
-                              fillEmptyParagraph: false, // Prevents auto-filling empty paragraphs
-                              removeEmptyNodes: true, // Removes unnecessary empty tags
+                              fillEmptyParagraph: false,
+                              removeEmptyNodes: false, // Ensures lists are not removed
+                            },
+                            disablePlugins: ["paste", "cleanHTML"], // Prevents automatic formatting issues
+                            toolbarButtonSize: "middle",
+                            buttons: [
+                              "bold",
+                              "italic",
+                              "underline",
+                              "|",
+                              "ul", // Unordered list (• Bullet points)
+                              "ol", // Ordered list (1, 2, 3 or A, B, C)
+                              "|",
+                              "outdent",
+                              "indent",
+                              "|",
+                              "align",
+                              "undo",
+                              "redo",
+                              "|",
+                              "hr",
+                              "eraser",
+                              "source",
+                            ],
+                            clipboard: {
+                              keepHtml: true, // Ensures list styles are not stripped
                             },
                             style: {
                               padding: "20px",

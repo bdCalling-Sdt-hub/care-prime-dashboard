@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { LuPlus } from "react-icons/lu";
-import BlogModal from "./BlogModal";
 import BlogTable from "./BlogTable";
 
 const AddTips = ({ onOpen }) => {
@@ -21,10 +20,6 @@ export default function Blogs() {
   return (
     <div className="flex flex-col ">
       <div className="flex items-center justify-between w-full">
-        <BlogModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        ></BlogModal>
 
       </div>
       <BlogTable />

@@ -1,14 +1,8 @@
 import { Menu } from "antd";
 import React, { useEffect, useState } from "react";
-import { MdOutlineCategory } from "react-icons/md";
-import { AiOutlineDashboard } from "react-icons/ai";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { HiUserGroup } from "react-icons/hi2";
-import { HiUsers } from "react-icons/hi2";
-import { TbDatabaseDollar } from "react-icons/tb";
 import { IoIosLogOut } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
-import { BiSolidCategory } from "react-icons/bi";
 import { PiCopyBold } from "react-icons/pi";
 import { RxDashboard } from "react-icons/rx";
 import { TbBulbFilled } from "react-icons/tb";
@@ -16,6 +10,7 @@ import { HiTicket } from "react-icons/hi2";
 import { IoNewspaper } from "react-icons/io5";
 import { IoBriefcase } from "react-icons/io5";
 import MainLogo from "../../assets/MainLogo.png"
+import { BiPackage } from "react-icons/bi";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -39,22 +34,8 @@ const Sidebar = () => {
   key: "/category",
   icon: <PiCopyBold size={24} />,
   label: <Link to="/category">Category</Link>,
-  // children: [
-  //   {
-  //     key: `/category/:id`, 
-  //     label: (
-  //       <Link to={`/category/:id`} className="text-white hover:text-white">
-  //       </Link>
-  //     ),
-  //   },
-  // ],
 },
 
-    // {
-    //   key: "/earnings",
-    //   icon: <TbDatabaseDollar size={24} />,
-    //   label: <Link to="/earnings">Earnings</Link>,
-    // },
     {
       key: "/insight",
       icon: <TbBulbFilled size={24} />,
@@ -70,40 +51,9 @@ const Sidebar = () => {
       icon: <IoBriefcase size={24} />,
       label: <Link to="/medicalhistory">Medical History</Link>,
     },
-    // {
-    //     key: "/artists",
-    //     icon: <HiUsers size={24} />,
-    //     label: <Link to="/artists">Artists</Link>
-    // },
-    // {
-    //     key: "/users",
-    //     icon: <HiUserGroup size={24} />,
-    //     label: <Link to="/users">User</Link>
-    // },
-
-    /* {
-            key: "/admin",
-            icon: <MdOutlineAdminPanelSettings size={24} />,
-            label: <Link to="/admin">Make Admin</Link>
-        }, */
-    // {
-    //     key: "/category",
-    //     icon: <MdOutlineCategory size={24} />,
-    //     label: <Link to="/category" >Category</Link>
-    // },
-    // {
-    //     key: "/sub-category",
-    //     icon: <BiSolidCategory size={24} />,
-    //     label: <Link to="/sub-category" >Sub Category</Link>
-    // },
-    // {
-    //     key: "/events",
-    //     icon: <MdOutlineCategory size={24} />,
-    //     label: <Link to="/events" >Events</Link>
-    // },
     {
       key: "/packagesplans",
-      icon: <HiTicket size={24} />,
+      icon: <BiPackage size={24} />,
       label: <Link to="/packagesplans">Packages</Link>,
     },
     {
