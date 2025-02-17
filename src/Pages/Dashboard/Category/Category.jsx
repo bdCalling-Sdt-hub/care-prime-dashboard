@@ -31,13 +31,13 @@ import { useNavigate, useParams } from "react-router-dom";
 // import SymptomModal from "./SymptomModal"; // Import the SymptomModal component
 
 const MedicalHistory = () => {
-  // API Queries & Mutations
-  const { data, isLoading } = useCategoryQuery();
+  const [page,setPage]=useState(1)
+  const { data, isLoading } = useCategoryQuery(page);
   const [createCategory] = useCreateCategoryMutation();
   const [updateCategory] = useUpdateCategoryMutation();
   const [deleteCategory] = useDeleteCategoryMutation();
   const { data: get } = useGetIdSymptomCategoryQuery();
-console.log(get)
+console.log(page)
   // Modal Control & State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSymptomModalOpen, setIsSymptomModalOpen] = useState(false);
@@ -224,6 +224,7 @@ console.log(get)
       ),
     },
   ];
+  console.log(data);
 
   return (
     <div>
@@ -246,6 +247,11 @@ console.log(get)
         dataSource={data?.data.categories || []}
         loading={isLoading}
         rowKey="_id"
+        pagination={{
+          total: data?.data.pagination?.total,
+          pageSize: data?.data.pagination?.limit,
+          onChange: (page) => setPage(page),
+        }}
       />
 
       {/* Category Modal */}
@@ -279,7 +285,7 @@ console.log(get)
                   return false;
                 }}
                 showUploadList={false}
-                onChange={handleImageChange} 
+                onChange={handleImageChange}
               >
                 <Button icon={<UploadOutlined />}>Upload</Button>
               </Upload>

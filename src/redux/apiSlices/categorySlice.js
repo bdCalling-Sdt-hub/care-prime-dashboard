@@ -26,8 +26,8 @@ const categorySlice = api.injectEndpoints({
       invalidatesTags: ["category"],
     }),
     category: builder.query({
-      query: () => ({
-        url: "/category",
+      query: (page) => ({
+        url: `/category?page=${page}`,
         method: "GET",
       }),
       providesTags: ["category"],
