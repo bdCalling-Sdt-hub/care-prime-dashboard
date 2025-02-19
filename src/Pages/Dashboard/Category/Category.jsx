@@ -8,6 +8,7 @@ import {
   Upload,
   Avatar,
   message,
+  Image,
 } from "antd";
 import {
   PlusOutlined,
@@ -176,19 +177,21 @@ console.log(page)
       render: (_, __, index) => index + 1,
     },
     {
-      title: "Image",
+      title: "Icon",
       dataIndex: "image",
       key: "image",
       render: (text) => (
-        <Avatar
-          className="w-20 h-16  rounded-md object-cover bg-[#023F86]"
-          src={text?.startsWith("http") ? text : `${imageUrl}/${text}`}
-          icon={<UserOutlined />}
-        />
+        <div className="w-12 h-12 py-1 bg-[#023F86] rounded-md">
+          <Avatar
+            className=" w-10 h-10 flex items-center justify-center mx-auto object-cover rounded-md"
+            src={text?.startsWith("http") ? text : `${imageUrl}/${text}`}
+            icon={<UserOutlined />}
+          />
+        </div>
       ),
     },
     {
-      title: "Name",
+      title: "Category Name",
       dataIndex: "name",
       key: "name",
     },
@@ -264,10 +267,10 @@ console.log(page)
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Form.Item
             name="name"
-            label="Name"
+            label="Category Name"
             rules={[{ required: true, message: "Please enter a name" }]}
           >
-            <Input placeholder="Enter name" />
+            <Input placeholder="Enter category name" />
           </Form.Item>
 
           {/* Image Upload & Preview */}

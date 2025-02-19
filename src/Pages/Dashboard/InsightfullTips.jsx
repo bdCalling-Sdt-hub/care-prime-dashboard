@@ -156,7 +156,7 @@ const handleDelete = async (id) => {
       ),
     },
     {
-      title: "Name",
+      title: "Description",
       dataIndex: "name",
       width: 800,
       key: "name",
@@ -213,10 +213,10 @@ const handleDelete = async (id) => {
         <Form form={form} layout="vertical" onFinish={handleSubmit}>
           <Form.Item
             name="name"
-            label="Name"
+            label="Description"
             rules={[{ required: true, message: "Please enter a name" }]}
           >
-            <Input.TextArea placeholder="Enter name" rows={4}/>
+            <Input.TextArea placeholder="Enter description" rows={4}/>
           </Form.Item>
 
           {/* Image Upload & Preview */}

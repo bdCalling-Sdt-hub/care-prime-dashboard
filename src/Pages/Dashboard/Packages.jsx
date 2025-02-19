@@ -125,11 +125,11 @@ const PackagesPlans = () => {
       {isLoading ? (
         <p>Loading packages...</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-10">
           {data?.data?.map((pkg) => (
             <Card
               key={pkg.id}
-              title={<span className="text-lg font-semibold">{pkg.title}</span>}
+              title={<span className="text-2xl font-semibold">{pkg.title}</span>}
               bordered={false}
               className="shadow-lg rounded-xl border border-gray-200 hover:shadow-2xl transition-all"
               extra={

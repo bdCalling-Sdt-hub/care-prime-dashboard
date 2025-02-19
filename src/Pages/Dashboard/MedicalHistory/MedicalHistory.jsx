@@ -254,7 +254,16 @@ const MedicalHistory = () => {
           </Form.Item>
 
           {/* Image Upload & Preview */}
-          <Form.Item name="image" label="Image">
+          <Form.Item
+            name="image"
+            label="Image"
+            rules={[
+              {
+                required: true,
+                message: "Please upload an image!",
+              },
+            ]}
+          >
             <div className="flex items-center gap-4">
               <Avatar
                 size={64}
