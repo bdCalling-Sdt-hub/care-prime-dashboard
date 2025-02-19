@@ -1,20 +1,16 @@
 import { Menu } from "antd";
 import React, { useEffect, useState } from "react";
-import { MdOutlineCategory } from "react-icons/md";
-import { AiOutlineDashboard } from "react-icons/ai";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { HiUserGroup } from "react-icons/hi2";
-import { HiUsers } from "react-icons/hi2";
-import { TbDatabaseDollar } from "react-icons/tb";
 import { IoIosLogOut } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
-import { BiSolidCategory } from "react-icons/bi";
 import { PiCopyBold } from "react-icons/pi";
 import { RxDashboard } from "react-icons/rx";
 import { TbBulbFilled } from "react-icons/tb";
 import { HiTicket } from "react-icons/hi2";
 import { IoNewspaper } from "react-icons/io5";
 import { IoBriefcase } from "react-icons/io5";
+import MainLogo from "../../assets/MainLogo.png"
+import { BiPackage } from "react-icons/bi";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -35,15 +31,11 @@ const Sidebar = () => {
       label: <Link to="/">Analytics</Link>,
     },
     {
-      key: "/contents",
-      icon: <PiCopyBold size={24} />,
-      label: <Link to="/contents">Contnets</Link>,
-    },
-    // {
-    //   key: "/earnings",
-    //   icon: <TbDatabaseDollar size={24} />,
-    //   label: <Link to="/earnings">Earnings</Link>,
-    // },
+  key: "/category",
+  icon: <PiCopyBold size={24} />,
+  label: <Link to="/category">Category</Link>,
+},
+
     {
       key: "/insight",
       icon: <TbBulbFilled size={24} />,
@@ -59,50 +51,22 @@ const Sidebar = () => {
       icon: <IoBriefcase size={24} />,
       label: <Link to="/medicalhistory">Medical History</Link>,
     },
-    // {
-    //     key: "/artists",
-    //     icon: <HiUsers size={24} />,
-    //     label: <Link to="/artists">Artists</Link>
-    // },
-    // {
-    //     key: "/users",
-    //     icon: <HiUserGroup size={24} />,
-    //     label: <Link to="/users">User</Link>
-    // },
+    {
+      key: "/packagesplans",
+      icon: <BiPackage size={24} />,
+      label: <Link to="/packagesplans">Packages</Link>,
+    },
+    {
+      key: "/subscription",
+      icon: <HiTicket size={24} />,
+      label: <Link to="/subscription">Subscription</Link>,
+    },
 
-    /* {
-            key: "/admin",
-            icon: <MdOutlineAdminPanelSettings size={24} />,
-            label: <Link to="/admin">Make Admin</Link>
-        }, */
-    // {
-    //     key: "/category",
-    //     icon: <MdOutlineCategory size={24} />,
-    //     label: <Link to="/category" >Category</Link>
-    // },
-    // {
-    //     key: "/sub-category",
-    //     icon: <BiSolidCategory size={24} />,
-    //     label: <Link to="/sub-category" >Sub Category</Link>
-    // },
-    // {
-    //     key: "/events",
-    //     icon: <MdOutlineCategory size={24} />,
-    //     label: <Link to="/events" >Events</Link>
-    // },
     {
       key: "subMenuSetting",
       icon: <IoSettingsOutline size={24} />,
       label: "Settings",
       children: [
-        // {
-        //   key: "/banner",
-        //   label: (
-        //     <Link to="/banner" className="text-white hover:text-white">
-        //       Banner
-        //     </Link>
-        //   ),
-        // },
         {
           key: "/profile",
           label: (
@@ -138,26 +102,12 @@ const Sidebar = () => {
             </Link>
           ),
         },
-        // {
-        //   key: "/change-password",
-        //   label: (
-        //     <Link to="/change-password" className="text-white hover:text-white">
-        //       Change Password
-        //     </Link>
-        //   ),
-        // },
       ],
     },
-    // {
-    //     key: "/logout",
-    //     icon: <IoIosLogOut size={24} />,
-    //     label: <p onClick={handleLogout}>Logout</p>
-    // },
-
     {
-      key: "/subscription",
-      icon: <HiTicket size={24} />,
-      label: <Link to="/subscription">Subscription</Link>,
+      key: "/logout",
+      icon: <IoIosLogOut size={24} />,
+      label: <p onClick={handleLogout}>Logout</p>,
     },
   ];
 
@@ -188,11 +138,9 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="mt-5 ">
-      <Link to={"/"} className=" flex items-center justify-center py-4">
-        <p className="text-4xl font-semibold  font-sans tracking-wider text-white">
-          CarePrime
-        </p>
+    <div className="h-full ">
+      <Link to={"/"} className=" flex items-center  justify-center py-4 px-6">
+       <img src={MainLogo} alt="logo" />
       </Link>
 
       <Menu

@@ -13,11 +13,9 @@ const SubCategory = () => {
     const [value, setValue] = useState(null);
     const {data: categories}=useCategoryQuery();
     const {data: subCategories, refetch}=useGetSubCategoriesQuery();
-
     const [updateSubCategory, {isLoading}] = useUpdateSubCategoryMutation();
     const [createSubCategory, {isLoading:createLoading}] = useCreateSubCategoryMutation();
     const [deleteSubCategory] = useDeleteSubCategoryMutation();
-
     const [showUploadButton, setShowUploadButton] = useState(true);
     const [form] = Form.useForm();
     const [colors, setColors] = useState({ colors1: "", colors2: "" });

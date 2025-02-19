@@ -1,173 +1,121 @@
 import { Button, Form, Input } from "antd";
-import React from "react";
+import React, { useState } from "react";
+import { useChangePasswordMutation } from "../../../redux/apiSlices/authSlice";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
+import toast from "react-hot-toast";
 
 const ChangePassword = () => {
+  const [changePassword] = useChangePasswordMutation();
   const [form] = Form.useForm();
 
-  const handleChangePassword = (values) => {
-    console.log(values);
+  // Define error messages state
+  const [errorMessages, setErrorMessages] = useState({
+    newPassError: "",
+    conPassError: "",
+  });
+
+  // Validate password change
+  const validatePasswordChange = (values) => {
+    let errors = {};
+
+    if (values.currentPassword === values.newPassword) {
+      errors.newPassError = "The New password is similar to the old Password";
+    }
+
+    if (values.newPassword !== values.confirmPassword) {
+      errors.conPassError = "New Password and Confirm Password don't match";
+    }
+
+    setErrorMessages(errors);
+    return errors;
+  };
+
+  const onFinish = async (values) => {
+    const errors = validatePasswordChange(values);
+
+    const res = await changePassword(values);
+    console.log(res?.data?.success);
+
+
+
+     // If no errors, proceed with the API call
+    if (Object.keys(errors).length === 0) {
+      try {
+        
+        if (res?.data?.success) {
+          toast.success("Password changed successfully");
+          form.resetFields();
+        } else {
+          toast.error("Password change failed");
+        }
+      } catch (err) {
+        console.error("Error changing password:", err);
+        toast.error("An error occurred while changing the password");
+      }
+    }
   };
 
   return (
     <div>
-      <div className="">
-        <div>
-          <Form
-            form={form}
-            layout="vertical"
-            className="lg:ms-[50px] pe-[30px] mt-[30px] "
-            initialValues={{
-              remember: true,
-            }}
-            style={{
-              width: "100%",
-              height: "fit-content",
-            }}
-            onFinish={handleChangePassword}
-          >
-            <div className=" mb-[20px]  lg:w-[50%] w-[100%]">
-              <Form.Item
-                style={{ marginBottom: 0 }}
-                name="current_password"
-                label={<p style={{ display: "block" }}>Current Password</p>}
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your current password!",
-                  },
-                ]}
-              >
-                <Input.Password
-                  placeholder="Enter Password"
-                  type="password"
-                  style={{
-                    border: "1px solid #E0E4EC",
-                    height: "52px",
-                    background: "white",
-                    borderRadius: "8px",
-                    outline: "none",
-                  }}
-                />
-              </Form.Item>
-            </div>
-
-            <div className=" mb-[20px]  lg:w-[50%] w-[100%]">
-              <Form.Item
-                name="new_password"
-                label={<p style={{ display: "block" }}>New Password</p>}
-                dependencies={["current_password"]}
-                hasFeedback
-                rules={[
-                  {
-                    required: true,
-                    message: "Please confirm your password!",
-                  },
-                  ({ getFieldValue }) => ({
-                    validator(_, value) {
-                      if (
-                        !value ||
-                        getFieldValue("current_password") === value
-                      ) {
-                        return Promise.reject(
-                          new Error(
-                            "The new password and current password do not match!"
-                          )
-                        );
-                      }
-                      return Promise.resolve();
-                    },
-                  }),
-                ]}
-                style={{ marginBottom: 0 }}
-              >
-                <Input.Password
-                  type="password"
-                  placeholder="Enter password"
-                  style={{
-                    border: "1px solid #E0E4EC",
-                    height: "52px",
-                    background: "white",
-                    borderRadius: "8px",
-                    outline: "none",
-                  }}
-                />
-              </Form.Item>
-            </div>
-
-            <div className=" mb-[40px]  lg:w-[50%] w-[100%]">
-              <Form.Item
-                name="confirm_password"
-                label={<p style={{ display: "block" }}>Re-Type Password</p>}
-                style={{ marginBottom: 0 }}
-                dependencies={["new_password"]}
-                hasFeedback
-                rules={[
-                  {
-                    required: true,
-                    message: "Please confirm your password!",
-                  },
-                  ({ getFieldValue }) => ({
-                    validator(_, value) {
-                      if (!value || getFieldValue("new_password") === value) {
-                        return Promise.resolve();
-                      }
-                      return Promise.reject(
-                        new Error(
-                          "The new password that you entered do not match!"
-                        )
-                      );
-                    },
-                  }),
-                ]}
-              >
-                <Input.Password
-                  type="password"
-                  placeholder="Enter password"
-                  style={{
-                    border: "1px solid #E0E4EC",
-                    height: "52px",
-                    background: "white",
-                    borderRadius: "8px",
-                    outline: "none",
-                  }}
-                />
-              </Form.Item>
-            </div>
-            <div
-              style={{
-                width: "50%",
-                display: "flex",
-                gap: "16px",
-                alignItems: "center",
-                marginBottom: "20px",
-              }}
-            >
-              <div style={{ width: "100%", position: "relative" }}>
-                <Form.Item>
-                  <Button
-                    htmlType="submit"
-                    block
-                    style={{
-                      border: "none",
-                      height: "41px",
-                      background: "#023f86",
-                      color: "white",
-                      borderRadius: "8px",
-                      outline: "none",
-                      width: "150px",
-                      position: "absolute",
-                      right: "20px",
-                      bottom: "0px",
-                    }}
-                  >
-                    Submit
-                  </Button>
-                </Form.Item>
-              </div>
-            </div>
-          </Form>
-        </div>
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-semibold flex items-center gap-1">
+          <IoArrowBackCircleOutline size={26} className="font-medium" />
+          Change Password
+        </h1>
       </div>
+      <Form
+        layout="vertical"
+        form={form}
+        onFinish={onFinish}
+        className="w-[50%] mx-auto mt-20"
+      >
+        <Form.Item
+          name="currentPassword"
+          label={<p>Current Password</p>}
+          rules={[
+            { required: true, message: "Please enter your current password!" },
+          ]}
+        >
+          <Input.Password
+            placeholder="Enter current password"
+            className="h-12"
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="newPassword"
+          label={<p>New Password</p>}
+          rules={[{ required: true, message: "Please enter a new password!" }]}
+        >
+          <Input.Password placeholder="Enter new password" className="h-12" />
+        </Form.Item>
+        {errorMessages.newPassError && (
+          <p className="text-red-500">{errorMessages.newPassError}</p>
+        )}
+
+        <Form.Item
+          name="confirmPassword"
+          label={<p>Confirm Password</p>}
+          rules={[
+            { required: true, message: "Please confirm your new password!" },
+          ]}
+        >
+          <Input.Password placeholder="Confirm new password" className="h-12" />
+        </Form.Item>
+        {errorMessages.conPassError && (
+          <p className="text-red-500">{errorMessages.conPassError}</p>
+        )}
+
+        <Form.Item className="text-center">
+          <Button
+            htmlType="submit"
+            // loading={isLoading}
+            className="w-full h-12 bg-[#023F86] text-white"
+          >
+            Update password
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 };

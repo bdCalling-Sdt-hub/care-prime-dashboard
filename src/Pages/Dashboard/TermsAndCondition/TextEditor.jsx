@@ -5,15 +5,7 @@ import { BiBorderRadius } from "react-icons/bi";
 const TextEditor = ({ value, onChange }) => {
   const editor = useRef(null);
 
-  const config = {
-    readonly: false,
-    placeholder: "Start typing...",
-    minHeight: 1,
-    toolbarAdaptive: true,
-    toolbar: true,
-    statusbar: false,
-    maxHeight: 500,
-  };
+  
 
   return (
     <JoditEditor

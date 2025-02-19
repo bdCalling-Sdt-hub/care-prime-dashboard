@@ -1,60 +1,43 @@
 import { api } from "../api/baseApi";
 
-
 const categorySlice = api.injectEndpoints({
-    endpoints: (builder)=>({
-        createCategory: builder.mutation({
-            query: (categoryData)=> {
-                return{
-                    url: "/category/create-category",
-                    method: "POST",
-                    body: categoryData,
-                    headers:{
-                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`
-                    }
-                }
-            }
-        }),
-        updateCategory: builder.mutation({
-            query: ({ id, updatedData})=> {
-                return{
-                    url: `/category/update-category/${id}`,
-                    method: "PATCH",
-                    body: updatedData,
-                    headers:{
-                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`
-                    }
-                }
-            }
-        }),
-        deleteCategory: builder.mutation({
-            query: (id)=> {
-                return{
-                    url: `/category/delete-category/${id}`,
-                    method: "DELETE",
-                    headers:{
-                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`
-                    }
-                }
-            }
-        }),
-        category: builder.query({
-            query: ()=> {
-                return{
-                    url: "/category/get-category",
-                    method: "GET",
-                    headers:{
-                        Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`
-                    }
-                }
-            }
-        }),
-    })
-})
+  endpoints: (builder) => ({
+    createCategory: builder.mutation({
+      query: (categoryData) => ({
+        url: "/category",
+        method: "POST",
+        body: categoryData,
+      }),
+      invalidatesTags: ["category"],
+    }),
+    updateCategory: builder.mutation({
+      query: ({ id, updateCategory }) => ({
+        url: `/category/${id}`,
+        method: "PATCH",
+        body: updateCategory,
+      }),
+      invalidatesTags: ["category"],
+    }),
+    deleteCategory: builder.mutation({
+      query: (id) => ({
+        url: `/category/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["category"],
+    }),
+    category: builder.query({
+      query: (page) => ({
+        url: `/category?page=${page}`,
+        method: "GET",
+      }),
+      providesTags: ["category"],
+    }),
+  }),
+});
 
 export const {
-    useCategoryQuery,
-    useCreateCategoryMutation,
-    useUpdateCategoryMutation,
-    useDeleteCategoryMutation
+  useCategoryQuery,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
 } = categorySlice;

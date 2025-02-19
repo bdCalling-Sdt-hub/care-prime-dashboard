@@ -1,10 +1,12 @@
 import { IoMdCloseCircleOutline, IoMdCloseCircle } from "react-icons/io";
 import ContentsForm from "./ContentsForm";
 import { Button } from "antd";
+import { useParams } from "react-router-dom";
 // import ModalForm from "./BlogForm";
 
-const ContentModal = ({ isOpen, onClose }) => {
+const ContentModal = () => {
   if (!isOpen) return null;
+  
 
   const handleBackdropClick = (e) => {
     e.stopPropagation();

@@ -6,15 +6,14 @@ import Earnings from "../Pages/Dashboard/Earnings";
 import Artists from "../Pages/Dashboard/Artists";
 import Users from "../Pages/Dashboard/Users";
 import Admin from "../Pages/Dashboard/Admin";
-import Contents from "../Pages/Dashboard/Contents/Contents";
-import Category from "../Pages/Dashboard/Category";
+// import Contents from "../Pages/Dashboard/Contents/Contents";
+// import Category from "../Pages/Dashboard/Category";
 import Events from "../Pages/Dashboard/Events";
 import Banner from "../Pages/Dashboard/Banner";
 import AboutUs from "../Pages/Dashboard/AboutUs";
 import PrivacyPolicy from "../Pages/Dashboard/PrivacyPolicy/PrivacyPolicy.jsx";
-import ChangePassword from "../Pages/Auth/ChangePassword";
+// import ChangePassword from "../Pages/Auth/ChangePassword";
 import Login from "../Pages/Auth/Login";
-import Subscription from "../Pages/Dashboard/Subscription";
 import Profile from "../Pages/Dashboard/Profile";
 import ForgotPassword from "../Pages/Auth/ForgotPassword";
 import VerifyOtp from "../Pages/Auth/VerifyOtp";
@@ -23,11 +22,18 @@ import NotFound from "../NotFound";
 import Notifications from "../Pages/Dashboard/Notifications";
 import SubCategory from "../Pages/Dashboard/SubCategory";
 import AdminProfile from "../Pages/Dashboard/AdminProfile/AdminProfile";
-import Insight from "../Pages/Dashboard/Insight";
+// import Insight from "../Pages/Dashboard/Insight";
 import Blogs from "../Pages/Dashboard/Blogs/Blogs";
 import MedicalHistory from "../Pages/Dashboard/MedicalHistory/MedicalHistory";
 import Faq from "../Pages/Dashboard/FAQ/Faq";
 import TermsAndCondition from "../Pages/Dashboard/TermsAndCondition/TermsAndCondition";
+import ChangePassword from "../Pages/Dashboard/AdminProfile/ChangePassword.jsx";
+import Insight from "../Pages/Dashboard/InsightfullTips.jsx";
+import PackagesPlans from "../Pages/Dashboard/Packages.jsx";
+import Subscription from "../Pages/Dashboard/Subscription.jsx";
+import Contents from "../Pages/Dashboard/Category/Category.jsx";
+import Category from "../Pages/Dashboard/Category/Category.jsx";
+import SymptomModal from "../components/common/SymptomModal.jsx";
 
 const router = createBrowserRouter([
   {
@@ -40,8 +46,8 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/contents",
-        element: <Contents />,
+        path: "/category",
+        element: <Category />,
       },
       {
         path: "/earnings",
@@ -64,12 +70,12 @@ const router = createBrowserRouter([
         element: <Subscription />,
       },
       {
-        path: "/admin",
-        element: <Admin />,
+        path: "/packagesplans",
+        element: <PackagesPlans />,
       },
       {
-        path: "/category",
-        element: <Category />,
+        path: "/admin",
+        element: <Admin />,
       },
       {
         path: "/faq",
@@ -95,10 +101,10 @@ const router = createBrowserRouter([
         path: "/terms-and-conditions",
         element: <TermsAndCondition />,
       },
-      // {
-      //   path: "/change-password",
-      //   element: <ChangePassword />,
-      // },
+      {
+        path: "/change-password",
+        element: <ChangePassword />,
+      },
       {
         path: "/sub-category",
         element: <SubCategory />,
@@ -114,6 +120,10 @@ const router = createBrowserRouter([
       {
         path: "/blogs",
         element: <Blogs />,
+      },
+      {
+        path: "/category/:id",
+        element: <SymptomModal />,
       },
       {
         path: "/medicalhistory",

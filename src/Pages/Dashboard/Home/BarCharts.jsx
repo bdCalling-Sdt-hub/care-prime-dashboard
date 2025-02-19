@@ -25,14 +25,16 @@ const data = [
   { name: "Dec", pv: 6000, amt: 3200 },
 ];
 
-export default function BarCharts() {
+export default function BarCharts({ visitors }) {
+  // console.log(visitors)
+  
   return (
-    <div className="w-full h-[330px] bg-white p-4 rounded-md ">
-      <h2 className="text-lg font-medium mb-2">Site Visitors</h2>
-      <ResponsiveContainer width="100%" height={250}>
+    <div className="w-full h-[270px] bg-white py-4 rounded-md ">
+      <h2 className="text-lg font-medium mb-2 ml-10">Site Visitors</h2>
+      <ResponsiveContainer width="100%" height={220}>
         <BarChart
-          data={data}
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+          data={visitors}
+          margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
           width={10}
           height={80}
         >
@@ -41,12 +43,12 @@ export default function BarCharts() {
             strokeWidth={0.2}
             vertical={false}
           />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="month" />
           <YAxis hide={false} />
           <Tooltip />
           {/* <Legend /> */}
           {/* <Bar dataKey="uv" fill="#82ca9d" /> */}
-          <Bar dataKey="pv" fill="#023f86" barSize={30} />
+          <Bar dataKey="total" fill="#023f86" barSize={30} />
         </BarChart>
       </ResponsiveContainer>
     </div>
