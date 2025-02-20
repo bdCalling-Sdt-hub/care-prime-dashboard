@@ -118,21 +118,22 @@ console.log(data)
                           config={{
                             enablePaste: true,
                             allowPasteFromWord: true,
-                            defaultActionOnPaste: "insert_as_html", // Keeps original formatting
-                            pastePlainText: false, // Ensures formatting is retained
+                            defaultActionOnPaste: "insert_clear_html",
+                            pastePlainText: true,
+                            enter: "BR",
                             cleanHTML: {
-                              fillEmptyParagraph: false,
-                              removeEmptyNodes: false, // Ensures lists are not removed
+                              fillEmptyParagraph: true,
+                              removeEmptyNodes: false,
                             },
-                            disablePlugins: ["paste", "cleanHTML"], // Prevents automatic formatting issues
+                            disablePlugins: [],
                             toolbarButtonSize: "middle",
                             buttons: [
                               "bold",
                               "italic",
                               "underline",
                               "|",
-                              "ul", // Unordered list (• Bullet points)
-                              "ol", // Ordered list (1, 2, 3 or A, B, C)
+                              "ul",
+                              "ol",
                               "|",
                               "outdent",
                               "indent",
@@ -146,7 +147,7 @@ console.log(data)
                               "source",
                             ],
                             clipboard: {
-                              keepHtml: true, // Ensures list styles are not stripped
+                              keepHtml: false,
                             },
                             style: {
                               padding: "20px",

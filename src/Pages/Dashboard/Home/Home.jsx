@@ -9,9 +9,9 @@ import { ImBooks } from "react-icons/im";
 import { useSummaryQuery } from "../../../redux/apiSlices/homeSlice";
 
 const statsDummy = [
-  { label: "Total User", value: "1000" },
+  { label: "Total User", value: "$ 1000" },
   { label: "Total Subscriber", value: "1200" },
-  { label: "Total Revenue", value: "$106" },
+  { label: "Total Revenue", value: "106" },
   { label: "Total Chapters", value: "106" },
 ];
 
@@ -48,7 +48,6 @@ const Home = () => {
   console.log(formattedData);
   return (
     <div>
-
       {/* Stats Cards */}
       <div className="grid grid-cols-4 gap-6 ">
         {formattedData?.map((stat, index) => (
@@ -77,6 +76,7 @@ const Home = () => {
               <div className="flex flex-col justify-start">
                 <h2 className="text-base">{stat.label}</h2>
                 <h3 className="text-slate-600 text-[32px] font-semibold">
+                  {index === 0 ? "$" : ""}
                   {stat.value}
                 </h3>
               </div>
@@ -88,8 +88,7 @@ const Home = () => {
       {/*Line Chart Section */}
       <div className="w-full py-4 bg-white rounded mt-4 relative ">
         <h2 className="text-lg font-medium mb-2 py-2 ml-10">User Engagement</h2>
-        <div className="flex items-center justify-end gap-4 absolute top-7 right-5">
-        </div>
+        <div className="flex items-center justify-end gap-4 absolute top-7 right-5"></div>
         <LineCharts users={summary?.data?.users} />
       </div>
 
