@@ -15,8 +15,9 @@ const Login = () => {
 
       if (response.data && response?.data?.data.accessToken) {
         localStorage.setItem("token", response?.data?.data.accessToken);
-        message.success("Login successful!"); 
+        message.success("Login successful!");
         navigate("/");
+        window.location.reload(); 
       } else {
         console.error("Token Missing in Response:", response?.error?.data);
         message.error(response?.error?.data?.message || "Invalid credentials!");
