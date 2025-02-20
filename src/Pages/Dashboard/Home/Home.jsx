@@ -7,13 +7,8 @@ import { TbUsersGroup } from "react-icons/tb";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import { ImBooks } from "react-icons/im";
 import { useSummaryQuery } from "../../../redux/apiSlices/homeSlice";
+import Spiner from "./Spiner";
 
-const statsDummy = [
-  { label: "Total User", value: "$ 1000" },
-  { label: "Total Subscriber", value: "1200" },
-  { label: "Total Revenue", value: "106" },
-  { label: "Total Chapters", value: "106" },
-];
 
 const CustomLegend = () => (
 
@@ -35,7 +30,7 @@ const Home = () => {
   const { data: summary ,isLoading } = useSummaryQuery();
 
   if(isLoading){
-    return <div>Loading ...</div>
+    return <div className="flex items-center justify-center h-screen"><Spiner/></div>
   }
   console.log(summary?.data)
   const stats = summary?.data?.summary;

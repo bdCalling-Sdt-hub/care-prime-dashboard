@@ -34,12 +34,17 @@ import Subscription from "../Pages/Dashboard/Subscription.jsx";
 import Contents from "../Pages/Dashboard/Category/Category.jsx";
 import Category from "../Pages/Dashboard/Category/Category.jsx";
 import SymptomModal from "../components/common/SymptomModal.jsx";
+import PrivateRoute from "./ProtectedRoute.jsx"
 
 const router = createBrowserRouter([
   {
     path: "/",
     // element: <ProtectedRoute><Main /></ProtectedRoute> ,
-    element: <Main />,
+    element: (
+      <PrivateRoute>
+        <Main />
+      </PrivateRoute>
+    ),
     children: [
       {
         path: "/",

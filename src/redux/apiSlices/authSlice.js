@@ -93,8 +93,10 @@ const authSlice = api.injectEndpoints({
         method: "GET",
         url: "/user/profile",
       }),
-      transformResponse: ({ user }) => user,
-      providesTags: ["User"], 
+      transformResponse: ({ data }) => {
+        return data;
+      },
+      providesTags: ["User"],
     }),
   }),
 });
