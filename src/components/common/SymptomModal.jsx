@@ -2,25 +2,27 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Input, Button, Form, message } from "antd";
 import JoditEditor from "jodit-react";
-import { useAddSymptomCategoryMutation, useGetIdSymptomCategoryQuery, } from "../../redux/apiSlices/symptomSlice";
+import {
+  useAddSymptomCategoryMutation,
+  useGetIdSymptomCategoryQuery,
+} from "../../redux/apiSlices/symptomSlice";
 
 const SymptomModal = () => {
   const { id } = useParams();
   const [form] = Form.useForm();
   const [data, setData] = useState(null);
-  const [addSymptomCategory] = useAddSymptomCategoryMutation()
+  const [addSymptomCategory] = useAddSymptomCategoryMutation();
 
-  const { data: symptomData, isLoading } = useGetIdSymptomCategoryQuery(id);  
-  const allSymptomData = symptomData?.data
-  const navigate=useNavigate()
+  const { data: symptomData, isLoading } = useGetIdSymptomCategoryQuery(id);
+  const allSymptomData = symptomData?.data;
+  const navigate = useNavigate();
 
   useEffect(() => {
     form.setFieldsValue({
       tips: allSymptomData?.tips,
       contents: allSymptomData?.contents,
     });
-  }, [allSymptomData , form]);
-
+  }, [allSymptomData, form]);
 
   useEffect(() => {
     if (symptomData) {
@@ -28,25 +30,21 @@ const SymptomModal = () => {
     }
   }, [symptomData]);
 
-  const onFinish = async(values) => {
-    
+  const onFinish = async (values) => {
     const data = {
-      category:id , 
-      ...values
-    }  
-console.log(data)
-    await addSymptomCategory(data).then((res)=>{
-     if(res){
-      message.success("Operation successfully done")
-      navigate("/category")
-     } else{
-      message.error("Operation field")
-     }
-    })
-
-    
+      category: id,
+      ...values,
+    };
+    console.log(data);
+    await addSymptomCategory(data).then((res) => {
+      if (res) {
+        message.success("Operation successfully done");
+        navigate("/category");
+      } else {
+        message.error("Operation field");
+      }
+    });
   };
-
 
   return (
     <div>
@@ -118,9 +116,9 @@ console.log(data)
                           config={{
                             enablePaste: true,
                             allowPasteFromWord: true,
-                            defaultActionOnPaste: "insert_clear_html",
-                            pastePlainText: true,
-                            enter: "BR",
+                            defaultActionOnPaste: "insert_format_html",
+                            pastePlainText: false,
+                            enter: "P",
                             cleanHTML: {
                               fillEmptyParagraph: true,
                               removeEmptyNodes: false,
@@ -128,30 +126,59 @@ console.log(data)
                             disablePlugins: [],
                             toolbarButtonSize: "middle",
                             buttons: [
+                              "source",
                               "bold",
                               "italic",
+                              "lineHeight",
                               "underline",
+                              "strikethrough",
                               "|",
                               "ul",
                               "ol",
-                              "|",
-                              "outdent",
                               "indent",
+                              "outdent",
                               "|",
                               "align",
                               "undo",
                               "redo",
                               "|",
+                              "fontsize",
+                              "brush",
+                              "paragraph",
+                              "|",
                               "hr",
                               "eraser",
-                              "source",
+                              "|",
+                              "image",
+                              "file",
+                              "video",
+                              "table",
+                              "link",
+                              "unlink",
+                              "|",
+                              "fullsize",
+                              "selectall",
+                              "print",
+                              "preview",
+                              "dots",
+                              "|",
                             ],
                             clipboard: {
-                              keepHtml: false,
+                              keepHtml: true,
                             },
                             style: {
                               padding: "20px",
                             },
+                            lineHeight: 1.5, 
+                            lineHeightValues: [
+                              "1",
+                              "1.5",
+                              "2",
+                              "2.5",
+                              "3",
+                              "3.5",
+                              "4",
+                            ],
                           }}
                         />
                       </Form.Item>
