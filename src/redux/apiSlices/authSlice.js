@@ -27,6 +27,7 @@ const authSlice = api.injectEndpoints({
         return message;
       },
     }),
+
     forgotPassword: builder.mutation({
       query: (data) => {
         return {
@@ -103,7 +104,6 @@ const authSlice = api.injectEndpoints({
 
 export const {
   useOtpVerifyMutation,
-  useLoginMutation,
   useForgotPasswordMutation,
   useResendOtpMutation,
   useResetPasswordMutation,
@@ -111,4 +111,5 @@ export const {
   useUpdateProfileMutation,
   useProfileQuery,
   useGetUserQuery,
+  useLoginMutation
 } = authSlice;
