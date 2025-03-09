@@ -49,7 +49,7 @@ const PackagesPlans = () => {
     // SweetAlert Confirmation
     Swal.fire({
       title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover this tip!",
+      text: "Once deleted, you will not be able to recover this package!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -61,16 +61,11 @@ const PackagesPlans = () => {
              await deletePackage(id);
              Swal.fire({
                title: "Deleted!",
-               text: "The insight tip has been deleted.",
+               text: "The package has been deleted.",
                icon: "success",
                showConfirmButton: false, 
                timer: 1500, 
              });
-     
-             
-             setTimeout(() => {
-               handleCloseModal();
-             }, 1000);
            } catch (error) {
              Swal.fire("Error!", "Failed to delete the insight tip.", "error");
            }
@@ -79,7 +74,6 @@ const PackagesPlans = () => {
   };
 
   const handleSubmit = async (values) => {
-    console.log("sfdhgds", values);
     try {
       const formattedData = {
         title: values.title,

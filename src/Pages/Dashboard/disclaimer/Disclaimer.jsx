@@ -5,10 +5,11 @@ import {
   usePrivacyPolicyQuery,
   useUpdatePrivacyPolicyMutation,
 } from "../../../redux/apiSlices/privacypolicy";
+import { useDisclaimerQuery, useUpdateDisclaimerMutation } from "../../../redux/apiSlices/disclaimer";
 
-export default function TermsAndConditions() {
-   const { data, isLoading, refetch } = usePrivacyPolicyQuery();
-   const [updatePrivacyPolicy] = useUpdatePrivacyPolicyMutation();
+export default function Disclaimer() {
+  const { data, isLoading, refetch } = useDisclaimerQuery();
+  const [updatePrivacyPolicy] = useUpdateDisclaimerMutation();
   const editor = useRef(null);
   const [content, setContent] = useState("");
 
@@ -17,7 +18,7 @@ export default function TermsAndConditions() {
       setContent(data.content);
     }
   }, [data?.content]);
- 
+
   // Save handler
   const handleSave = async () => {
     try {
@@ -39,7 +40,7 @@ export default function TermsAndConditions() {
 
   return (
     <div className="mx-auto p-6 bg-white shadow-md rounded-lg">
-      <h2 className="text-2xl font-bold mb-4">Privacy Policy</h2>
+      <h2 className="text-2xl font-bold mb-4">Disclaimer</h2>
 
       {/* Jodit Editor */}
       <JoditEditor

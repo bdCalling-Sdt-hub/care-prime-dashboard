@@ -62,8 +62,8 @@ const Subscription = () => {
     },
     {
       title: "End Date",
-      dataIndex: "endDate",
-      key: "endDate",
+      dataIndex: "currentPeriodEnd",
+      key: "currentPeriodEnd",
       render: (text) => <p>{moment(text).format("L")}</p>,
     },
     {
