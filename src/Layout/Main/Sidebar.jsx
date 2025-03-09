@@ -102,6 +102,22 @@ const Sidebar = () => {
             </Link>
           ),
         },
+        {
+          key: "/disclaimer",
+          label: (
+            <Link to="/disclaimer" className="text-white hover:text-white">
+              Disclaimer
+            </Link>
+          ),
+        },
+        {
+          key: "/resources",
+          label: (
+            <Link to="/resources" className="text-white hover:text-white">
+              Resources
+            </Link>
+          ),
+        },
       ],
     },
     {

@@ -74,7 +74,6 @@ const PackagesPlans = () => {
   };
 
   const handleSubmit = async (values) => {
-    console.log("sfdhgds", values);
     try {
       const formattedData = {
         title: values.title,

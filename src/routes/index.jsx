@@ -35,6 +35,8 @@ import Contents from "../Pages/Dashboard/Category/Category.jsx";
 import Category from "../Pages/Dashboard/Category/Category.jsx";
 import SymptomModal from "../components/common/SymptomModal.jsx";
 import PrivateRoute from "./ProtectedRoute.jsx"
+import Disclaimer from "../Pages/Dashboard/disclaimer/Disclaimer.jsx";
+import Resources from "../Pages/Dashboard/resources/Resources.jsx";
 
 const router = createBrowserRouter([
   {
@@ -106,6 +108,15 @@ const router = createBrowserRouter([
         path: "/terms-and-conditions",
         element: <TermsAndCondition />,
       },
+      {
+        path: "/disclaimer",
+        element: <Disclaimer />,
+      },
+      {
+        path: "/resources",
+        element: <Resources />,
+      },
+
       {
         path: "/change-password",
         element: <ChangePassword />,
